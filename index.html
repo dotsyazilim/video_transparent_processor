@@ -1,0 +1,472 @@
+cat > static/index.html <<'EOF'
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Video Processor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root {
+    --bg: #0b0f14;
+    --card: #121821;
+    --muted: #9bb0c9;
+    --txt: #e6eefb;
+    --pri: #3b82f6;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--txt);
+    font: 15px/1.5 Inter, system-ui, Segoe UI, Roboto, sans-serif;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid #1e2633;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  label > small {
+    color: var(--muted);
+    display: block;
+  }
+  input[type="number"] {
+    width: 7rem;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #1e2633;
+    background: #0d141d;
+    color: var(--txt);
+  }
+  .checkbox {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn {
+    padding: 10px 16px;
+    background: var(--pri);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .drop {
+    border: 2px dashed #304056;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    background: #0d141d;
+  }
+  small {
+    color: var(--muted);
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #2b3a52;
+    color: #bcd3f2;
+    font-size: 12px;
+  }
+  #log {
+    white-space: pre-wrap;
+    background: #0a1018;
+    color: #bcd3f2;
+    border: 1px solid #1b2534;
+    border-radius: 10px;
+    padding: 10px;
+    height: 200px;
+    overflow: auto;
+    font: 12px ui-monospace, Menlo, Consolas, monospace;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 1000px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .player {
+    position: relative;
+    border: 1px solid #2a3649;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .player video,
+  .player img {
+    width: 100%;
+    max-height: 420px;
+    display: block;
+    background: #000;
+  }
+  .toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #111a27;
+    border: 1px solid #2b3a52;
+    color: #cfe0ff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    align-items: center;
+  }
+  .tip {
+    color: #9bb0c9;
+    font-size: 13px;
+  }
+</style>
+
+<div class="wrap">
+  <h1>Video Processor</h1>
+
+  <div class="grid">
+    <div class="card">
+      <div class="drop" id="drop">
+        <input id="file" type="file" accept="video/*,image/gif" />
+        <div><small>Seç veya sürükle-bırak</small></div>
+      </div>
+      <div style="margin-top: 12px" class="player">
+        <video id="orig" controls muted></video>
+        <img id="origGif" style="display: none" />
+      </div>
+      <div style="margin-top: 8px"><span id="meta" class="badge">—</span></div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <label
+          >Hedef Yükseklik
+          <input
+            id="height"
+            type="number"
+            value="720"
+            min="144"
+            max="2160"
+          /><small>Genel akış için 720p yeterli</small></label
+        >
+        <label
+          >FPS
+          <input id="fps" type="number" value="24" min="8" max="60" /><small
+            >Akıcı değilse 30</small
+          ></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="videoSettings">
+        <label
+          >Alpha similarity
+          <input
+            id="similarity"
+            type="number"
+            step="0.01"
+            value="0.12"
+            min="0"
+            max="0.25"
+          /><small>Beyaz renk hassasiyeti</small></label
+        >
+        <label
+          >Blend
+          <input
+            id="blend"
+            type="number"
+            step="0.01"
+            value="0.03"
+            min="0"
+            max="0.10"
+          /><small>Kenar yumuşatma</small></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="videoSettings2">
+        <label
+          >Beyaz Eşiği
+          <input
+            id="whiteThreshold"
+            type="number"
+            step="0.01"
+            value="0.95"
+            min="0.8"
+            max="1.0"
+          /><small>Beyaz tespit hassasiyeti</small></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px">
+        <label class="checkbox"
+          ><input id="luma" type="checkbox" checked /> Chroma olmazsa luma
+          fallback</label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="outputFormats">
+        <label class="checkbox"
+          ><input id="outWebp" type="checkbox" checked />
+          <span id="webpLabel">Animated WebP (şeffaf)</span></label
+        >
+        <label class="checkbox" id="av1Option"
+          ><input id="outAv1" type="checkbox" /> WebM (AV1/VP9)
+          <small class="tip">akış/paylaşım</small></label
+        >
+        <label class="checkbox" id="h264Option"
+          ><input id="outH264" type="checkbox" /> MP4 (H.264)
+          <small class="tip">en geniş uyumluluk</small></label
+        >
+      </div>
+      <div class="tip" style="margin-top: 6px" id="outputTip">
+        Birden fazla çıktı seçersen <b>ZIP</b> iner; tek çıktı seçersen
+        tarayıcıda önizlenir.
+      </div>
+      <div class="tip" style="margin-top: 6px; display: none" id="gifTip">
+        GIF dosyalar için <b>WebP</b> ve sıkıştırılmış <b>GIF</b> çıktısı
+        üretilir.
+      </div>
+      <div class="actions">
+        <button class="btn" id="run">İşle</button>
+        <small id="status"></small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="resultCard" style="display: none">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div>Sonuç Önizleme</div>
+      <a id="dl" class="badge" href="#" download>İndir</a>
+    </div>
+    <div class="player" id="resultPlayer">
+      <video id="resVideo" controls loop style="display: none"></video>
+      <img id="resImg" style="display: none" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div>İşlem Log</div>
+      <a class="badge" href="/api/probe" target="_blank">/api/probe</a>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+
+<script>
+  const q = (s) => document.querySelector(s);
+  const fileInput = q("#file"),
+    runBtn = q("#run"),
+    statusEl = q("#status"),
+    logEl = q("#log");
+  const drop = q("#drop"),
+    orig = q("#orig"),
+    origGif = q("#origGif"),
+    meta = q("#meta");
+  const resCard = q("#resultCard"),
+    resVideo = q("#resVideo"),
+    resImg = q("#resImg"),
+    dl = q("#dl");
+  let isCurrentFileGIF = false;
+
+  function log(s) {
+    logEl.textContent += s + "\\n";
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  function fmt(b) {
+    if (!b && b !== 0) return "—";
+    const u = ["B", "KB", "MB", "GB"];
+    let i = 0;
+    while (b >= 1024 && i < u.length - 1) {
+      b /= 1024;
+      i++;
+    }
+    return b.toFixed(1) + " " + u[i];
+  }
+
+  drop.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    drop.style.background = "#0f1722";
+  });
+  drop.addEventListener("dragleave", (e) => {
+    drop.style.background = "";
+  });
+  drop.addEventListener("drop", (e) => {
+    e.preventDefault();
+    drop.style.background = "";
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      fileInput.files = e.dataTransfer.files;
+      previewLocal();
+    }
+  });
+  fileInput.addEventListener("change", previewLocal);
+
+  function previewLocal() {
+    const f = fileInput.files[0];
+    if (!f) return;
+    const url = URL.createObjectURL(f);
+    isCurrentFileGIF =
+      f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
+
+    if (isCurrentFileGIF) {
+      orig.style.display = "none";
+      origGif.style.display = "block";
+      origGif.src = url;
+    } else {
+      orig.style.display = "block";
+      origGif.style.display = "none";
+      orig.src = url;
+      orig.play().catch(() => {});
+    }
+
+    meta.textContent = `${f.name} • ${fmt(f.size)} • ${
+      isCurrentFileGIF ? "GIF" : "Video"
+    }`;
+    updateUIForFileType();
+  }
+
+  function updateUIForFileType() {
+    const isGIF = isCurrentFileGIF;
+
+    // Video-specific settings
+    q("#videoSettings").style.display = isGIF ? "none" : "flex";
+    q("#videoSettings2").style.display = isGIF ? "none" : "flex";
+    q("#luma").parentElement.parentElement.style.display = isGIF
+      ? "none"
+      : "flex";
+
+    // Output format options
+    q("#av1Option").style.display = isGIF ? "none" : "flex";
+    q("#h264Option").style.display = isGIF ? "none" : "flex";
+    q("#webpLabel").textContent = isGIF
+      ? "Optimize WebP (küçük boyut)"
+      : "Animated WebP (şeffaf)";
+
+    // Tips
+    q("#outputTip").style.display = isGIF ? "none" : "block";
+    q("#gifTip").style.display = isGIF ? "block" : "none";
+
+    // Set appropriate defaults based on file type
+    if (isGIF) {
+      q("#outWebp").checked = true;
+      q("#outAv1").checked = false;
+      q("#outH264").checked = false;
+    } else {
+      // Video için şeffaf WebP default
+      q("#outWebp").checked = true;
+      q("#outAv1").checked = false;
+      q("#outH264").checked = false;
+    }
+  }
+
+  runBtn.addEventListener("click", async () => {
+    const f = fileInput.files[0];
+    if (!f) {
+      alert("Video/GIF dosyası seç.");
+      return;
+    }
+    const fd = new FormData();
+    ["height", "fps", "similarity", "blend", "whiteThreshold"].forEach((id) =>
+      fd.append(id, q("#" + id).value)
+    );
+    ["luma", "outWebp", "outAv1", "outH264"].forEach((id) =>
+      fd.append(id, q("#" + id).checked ? "true" : "false")
+    );
+    fd.append("file", f);
+    runBtn.disabled = true;
+    statusEl.textContent = "İşleniyor…";
+    logEl.textContent = "";
+    resCard.style.display = "none";
+
+    try {
+      const res = await fetch("/api/process", { method: "POST", body: fd });
+      const ct = res.headers.get("Content-Type") || "";
+      if (!res.ok) {
+        const txt = await res.text();
+        log("Hata: " + txt);
+        alert("Hata: " + txt);
+      } else if (ct.startsWith("application/zip")) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = f.name.replace(/\.[^.]+$/, "") + "_processed.zip";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        log("✓ ZIP indirildi.");
+      } else {
+        // tek dosya → önizle
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        dl.href = url;
+        const ext = ct.includes("webm")
+          ? ".webm"
+          : ct.includes("mp4")
+          ? ".mp4"
+          : ct.includes("webp")
+          ? ".webp"
+          : ct.includes("gif")
+          ? ".gif"
+          : "";
+        dl.download = f.name.replace(/\.[^.]+$/, "") + "_processed" + ext;
+        resVideo.style.display = "none";
+        resImg.style.display = "none";
+        if (ct.startsWith("video/")) {
+          resVideo.src = url;
+          resVideo.style.display = "block";
+          resVideo.play().catch(() => {});
+        } else {
+          resImg.src = url;
+          resImg.style.display = "block";
+        }
+        orig.style.display = "block";
+        resCard.style.display = "block";
+        log("✓ Önizleme hazır. İstersen indir.");
+      }
+    } catch (err) {
+      log("Fetch hata: " + err);
+      alert(err);
+    } finally {
+      runBtn.disabled = false;
+      statusEl.textContent = "";
+    }
+  });
+</script>
+EOF
