@@ -115,19 +115,76 @@
     padding: 12px;
     margin-bottom: 8px;
     background: #0d141d;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid #1e2633;
     transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
   }
 
   .file-item:hover {
     background: #111a27;
     border-color: #2b3a52;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .file-thumbnail {
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+    margin-right: 12px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .file-thumbnail video,
+  .file-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .file-thumbnail .placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #1e2633, #2a3649);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 24px;
+  }
+
+  .savings-overlay {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(220, 38, 38, 0.9);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    backdrop-filter: blur(4px);
+    display: none;
+  }
+
+  .savings-overlay.show {
+    display: block;
+  }
+
+  .savings-overlay.positive {
+    background: rgba(34, 197, 94, 0.9);
   }
 
   .file-info {
     flex: 1;
     min-width: 0;
+    margin-right: 12px;
   }
 
   .file-name {
@@ -137,11 +194,24 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 14px;
   }
 
   .file-size {
     color: var(--muted);
     font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .file-compressed-size {
+    color: #10b981;
+    font-size: 12px;
+    font-weight: 500;
+    display: none;
+  }
+
+  .file-compressed-size.show {
+    display: block;
   }
 
   .file-progress {
@@ -628,13 +698,49 @@
   });
   function fmt(b) {
     if (!b && b !== 0) return "—";
-    const u = ["B", "KB", "MB", "GB"];
-    let i = 0;
-    while (b >= 1024 && i < u.length - 1) {
-      b /= 1024;
-      i++;
-    }
-    return b.toFixed(1) + " " + u[i];
+    if (b < 1024) return b + " B";
+
+    const kb = b / 1024;
+    if (kb < 1024) return kb.toFixed(kb < 10 ? 1 : 0) + " KB";
+
+    const mb = kb / 1024;
+    if (mb < 1024) return mb.toFixed(mb < 10 ? 1 : 0) + " MB";
+
+    const gb = mb / 1024;
+    return gb.toFixed(gb < 10 ? 1 : 0) + " GB";
+  }
+
+  // Thumbnail oluşturma fonksiyonu
+  function createThumbnail(file) {
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const isGIF =
+        file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+
+      if (isGIF) {
+        const img = document.createElement("img");
+        img.src = url;
+        img.onload = () => {
+          resolve({ element: img, url });
+        };
+        img.onerror = () => {
+          resolve({ element: null, url });
+        };
+      } else {
+        const video = document.createElement("video");
+        video.src = url;
+        video.muted = true;
+        video.onloadedmetadata = () => {
+          video.currentTime = Math.min(1, video.duration * 0.1); // İlk saniye veya %10'u
+        };
+        video.oncanplay = () => {
+          resolve({ element: video, url });
+        };
+        video.onerror = () => {
+          resolve({ element: null, url });
+        };
+      }
+    });
   }
 
   drop.addEventListener("dragover", (e) => {
@@ -654,7 +760,7 @@
   });
   fileInput.addEventListener("change", previewLocal);
 
-  function previewLocal() {
+  async function previewLocal() {
     const files = fileInput.files;
     if (!files || files.length === 0) {
       fileList.style.display = "none";
@@ -686,7 +792,7 @@
       fileList.style.display = "none";
     } else {
       meta.textContent = `İlk dosya önizleme: ${f.name}`;
-      createFileList(files);
+      await createFileList(files);
     }
 
     updateUIForFileType();
@@ -709,7 +815,7 @@
   }
 
   // Modern dosya listesi oluştur
-  function createFileList(files) {
+  async function createFileList(files) {
     fileQueue = [];
     fileItems.innerHTML = "";
 
@@ -730,10 +836,35 @@
       const fileItem = document.createElement("div");
       fileItem.className = "file-item";
       fileItem.id = fileId;
-      fileItem.innerHTML = `
+
+      // Thumbnail container oluştur
+      const thumbnailDiv = document.createElement("div");
+      thumbnailDiv.className = "file-thumbnail";
+      thumbnailDiv.innerHTML = `
+        <div class="placeholder">🎬</div>
+        <div class="savings-overlay" id="${fileId}_overlay"></div>
+      `;
+
+      // Thumbnail oluştur
+      try {
+        const thumbnail = await createThumbnail(files[i]);
+        if (thumbnail.element) {
+          thumbnailDiv.innerHTML = `
+            <div class="savings-overlay" id="${fileId}_overlay"></div>
+          `;
+          thumbnailDiv.appendChild(thumbnail.element);
+        }
+      } catch (e) {
+        // Hata durumunda placeholder kalır
+      }
+
+      fileItem.appendChild(thumbnailDiv);
+
+      fileItem.innerHTML += `
         <div class="file-info">
           <div class="file-name">${files[i].name}</div>
-          <div class="file-size">${fmt(files[i].size)}</div>
+          <div class="file-size">Orijinal: ${fmt(files[i].size)}</div>
+          <div class="file-compressed-size" id="${fileId}_compressed_size"></div>
         </div>
         <div class="file-progress" id="${fileId}_progress">
           <div class="file-progress-bar" id="${fileId}_bar"></div>
@@ -751,10 +882,12 @@
   }
 
   // Dosya durumunu güncelle
-  function updateFileStatus(fileId, status, progress = null) {
+  function updateFileStatus(fileId, status, progress = null, result = null) {
     const statusEl = q(`#${fileId}_status`);
     const progressEl = q(`#${fileId}_progress`);
     const progressBar = q(`#${fileId}_bar`);
+    const overlayEl = q(`#${fileId}_overlay`);
+    const compressedSizeEl = q(`#${fileId}_compressed_size`);
 
     statusEl.className = `file-status status-${status}`;
 
@@ -773,6 +906,22 @@
         statusEl.textContent = "Tamam";
         progressEl.classList.remove("show");
         q(`#${fileId}_download`).classList.add("ready");
+        
+        // Sonuç varsa savings overlay ve sıkıştırılmış boyutu göster
+        if (result) {
+          const fileData = fileQueue.find(f => f.id === fileId);
+          if (fileData) {
+            const savings = ((fileData.originalSize - result.blob.size) / fileData.originalSize * 100);
+            
+            // Overlay göster
+            overlayEl.textContent = `${savings > 0 ? "-" : "+"}${Math.abs(savings).toFixed(0)}%`;
+            overlayEl.className = savings > 0 ? "savings-overlay show positive" : "savings-overlay show";
+            
+            // Sıkıştırılmış boyut göster
+            compressedSizeEl.textContent = `Sıkıştırılmış: ${fmt(result.blob.size)}`;
+            compressedSizeEl.classList.add("show");
+          }
+        }
         break;
       case "error":
         statusEl.textContent = "Hata";
@@ -791,21 +940,11 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
-
-      // Savings badge ekle
-      const fileItem = q(`#${fileId}`);
-      const fileActions = fileItem.querySelector(".file-actions");
-      if (!fileActions.querySelector(".savings-badge")) {
-        const savings = (
-          ((fileData.originalSize - fileData.result.blob.size) /
-            fileData.originalSize) *
-          100
-        ).toFixed(0);
-        const badge = document.createElement("span");
-        badge.className = "savings-badge";
-        badge.textContent = `${savings}% tasarruf`;
-        fileActions.insertBefore(badge, fileActions.lastElementChild);
-      }
+      
+      // İndirme sonrası feedback
+      const statusEl = q(`#${fileId}_status`);
+      statusEl.textContent = "İndirildi";
+      statusEl.style.color = "#10b981";
     }
   }
 
@@ -908,11 +1047,12 @@
         log(`✅ ZIP hazır: ${file.name}`);
 
         if (fileId) {
-          updateFileStatus(fileId, "completed");
+          const result = { blob, filename, type: "zip", url };
+          updateFileStatus(fileId, "completed", null, result);
           // fileQueue'ya sonucu kaydet
           const fileData = fileQueue.find((f) => f.id === fileId);
           if (fileData) {
-            fileData.result = { blob, filename, type: "zip", url };
+            fileData.result = result;
           }
         }
 
@@ -935,17 +1075,18 @@
         log(`✅ Hazır: ${filename}`);
 
         if (fileId) {
-          updateFileStatus(fileId, "completed");
+          const result = {
+            blob,
+            filename,
+            type: "single",
+            url,
+            contentType: ct,
+          };
+          updateFileStatus(fileId, "completed", null, result);
           // fileQueue'ya sonucu kaydet
           const fileData = fileQueue.find((f) => f.id === fileId);
           if (fileData) {
-            fileData.result = {
-              blob,
-              filename,
-              type: "single",
-              url,
-              contentType: ct,
-            };
+            fileData.result = result;
           }
         }
 
@@ -1002,11 +1143,18 @@
       for (let i = 0; i < files.length; i++) {
         const fileData = fileQueue[i];
         statusEl.textContent = `İşleniyor… (${i + 1}/${files.length})`;
-        const result = await processFile(files[i], i, files.length, fileData.id);
+        const result = await processFile(
+          files[i],
+          i,
+          files.length,
+          fileData.id
+        );
         if (result) successCount++;
       }
 
-      log(`🎉 İşlem tamamlandı! ${successCount}/${files.length} dosya başarılı.`);
+      log(
+        `🎉 İşlem tamamlandı! ${successCount}/${files.length} dosya başarılı.`
+      );
     }
 
     runBtn.disabled = false;
