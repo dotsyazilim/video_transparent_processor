@@ -14,18 +14,6 @@
     --warning: #f59e0b;
     --border: #1e2633;
   }
-
-  [data-theme="light"] {
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --muted: #64748b;
-    --txt: #1e293b;
-    --pri: #3b82f6;
-    --success: #059669;
-    --error: #dc2626;
-    --warning: #d97706;
-    --border: #e2e8f0;
-  }
   * {
     box-sizing: border-box;
   }
@@ -318,42 +306,6 @@
     font-weight: bold;
   }
 
-  /* Tema toggle butonu */
-  .theme-toggle {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 18px;
-  }
-
-  .theme-toggle:hover {
-    background: var(--pri);
-    border-color: var(--pri);
-    transform: scale(1.05);
-  }
-
-  .theme-icon {
-    transition: transform 0.3s ease;
-  }
-
-  [data-theme="light"] .theme-icon {
-    transform: rotate(180deg);
-  }
-
-  [data-theme="light"] .theme-toggle .theme-icon::before {
-    content: "☀️";
-  }
-
-  .theme-toggle .theme-icon::before {
-    content: "🌙";
-  }
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -377,24 +329,12 @@
 </style>
 
 <div class="wrap">
-  <div
-    style="
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    "
-  >
-    <div>
-      <h1>🎥 Video Compressor</h1>
-      <p style="color: var(--muted); margin: 0">
-        Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma
-        oranıyla optimize edin
-      </p>
-    </div>
-    <button id="themeToggle" class="theme-toggle" title="Tema değiştir">
-      <span class="theme-icon">🌙</span>
-    </button>
+  <div style="margin-bottom: 20px">
+    <h1>🎥 Video Compressor</h1>
+    <p style="color: var(--muted); margin: 0">
+      Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma oranıyla
+      optimize edin
+    </p>
   </div>
 
   <div class="grid">
@@ -437,6 +377,13 @@
           </div>
         </div>
         <div id="fileItems"></div>
+        <button
+          class="btn"
+          id="batchDownloadBtn"
+          style="margin-top: 12px; width: 100%; display: none"
+        >
+          Toplu İndir
+        </button>
       </div>
     </div>
 
@@ -638,29 +585,15 @@
       <img id="resImg" style="display: none" />
     </div>
   </div>
-
-  <div class="card">
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-      "
-    >
-      <div>İşlem Log</div>
-      <a class="badge" href="/api/probe" target="_blank">/api/probe</a>
-    </div>
-    <div id="log"></div>
-  </div>
 </div>
 
+<!-- JSZip kütüphanesi -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 <script>
   const q = (s) => document.querySelector(s);
   const fileInput = q("#file"),
     runBtn = q("#run"),
-    statusEl = q("#status"),
-    logEl = q("#log");
+    statusEl = q("#status");
 
   // Yeni elementler
   const presetSelect = q("#preset"),
@@ -680,6 +613,7 @@
     dl = q("#dl");
   let originalFileSize = 0;
   let fileQueue = []; // Dosya kuyruğu
+  const batchDownloadBtn = q("#batchDownloadBtn");
 
   // Preset ayarları
   const presets = {
@@ -712,20 +646,6 @@
     scaleSettings.style.display = this.value === "scale" ? "flex" : "none";
   });
 
-  // Tema toggle fonksiyonu
-  const themeToggle = q("#themeToggle");
-  themeToggle.addEventListener("click", function () {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", newTheme);
-
-    // Local storage'a kaydet
-    localStorage.setItem("theme", newTheme);
-  });
-
-  // Sayfa yüklendiğinde tema kontrolü
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme);
   function fmt(b) {
     if (!b && b !== 0) return "—";
     if (b < 1024) return b + " B";
@@ -802,16 +722,15 @@
     const isGIF =
       f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
 
-    // Çoklu dosya durumunda modern liste göster
+    // Her zaman modern liste göster (tek dosya için de)
     if (files.length === 1) {
       meta.textContent = `${f.name} • ${fmt(f.size)} • ${
         isGIF ? "GIF" : "Video"
       }`;
-      fileList.style.display = "none";
     } else {
       meta.textContent = `İlk dosya: ${f.name}`;
-      await createFileList(files);
     }
+    await createFileList(files);
 
     // Karşılaştırma istatistiklerini gizle
     comparisonStats.style.display = "none";
@@ -905,6 +824,15 @@
     const overlayEl = q(`#${fileId}_overlay`);
     const compressedSizeEl = q(`#${fileId}_compressed_size`);
 
+    // fileQueue içindeki status'u da güncelle
+    const fileData = fileQueue.find((f) => f.id === fileId);
+    if (fileData) {
+      fileData.status = status;
+      if (result) {
+        fileData.result = result;
+      }
+    }
+
     statusEl.className = `file-status status-${status}`;
 
     switch (status) {
@@ -925,7 +853,6 @@
 
         // Sonuç varsa savings overlay ve sıkıştırılmış boyutu göster
         if (result) {
-          const fileData = fileQueue.find((f) => f.id === fileId);
           if (fileData) {
             const savings =
               ((fileData.originalSize - result.blob.size) /
@@ -978,7 +905,7 @@
 
   // Çoklu dosya işleme fonksiyonu
   async function processFile(file, fileIndex, totalFiles, fileId = null) {
-    log(`📁 İşleniyor (${fileIndex + 1}/${totalFiles}): ${file.name}`);
+    console.log(`📁 İşleniyor (${fileIndex + 1}/${totalFiles}): ${file.name}`);
 
     if (fileId) {
       updateFileStatus(fileId, "processing", 10);
@@ -1019,7 +946,7 @@
 
       if (!res.ok) {
         const txt = await res.text();
-        log(`❌ Hata (${file.name}): ${txt}`);
+        console.log(`❌ Hata (${file.name}): ${txt}`);
         if (fileId) {
           updateFileStatus(fileId, "error");
         }
@@ -1028,7 +955,7 @@
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const filename = file.name.replace(/\.[^.]+$/, "") + "_processed.zip";
-        log(`✅ ZIP hazır: ${file.name}`);
+        console.log(`✅ ZIP hazır: ${file.name}`);
 
         if (fileId) {
           const result = { blob, filename, type: "zip", url };
@@ -1056,7 +983,7 @@
           : "";
         const filename = file.name.replace(/\.[^.]+$/, "") + "_processed" + ext;
 
-        log(`✅ Hazır: ${filename}`);
+        console.log(`✅ Hazır: ${filename}`);
 
         if (fileId) {
           const result = {
@@ -1077,7 +1004,7 @@
         return { blob, filename, type: "single", url, contentType: ct };
       }
     } catch (err) {
-      log(`❌ Fetch hata (${file.name}): ${err}`);
+      console.log(`❌ Fetch hata (${file.name}): ${err}`);
       if (fileId) {
         updateFileStatus(fileId, "error");
       }
@@ -1093,8 +1020,8 @@
     }
 
     runBtn.disabled = true;
-    logEl.textContent = "";
     resCard.style.display = "none";
+    batchDownloadBtn.style.display = "none"; // Yeni işlem başladığında gizle
 
     if (files.length === 1) {
       statusEl.textContent = "İşleniyor…";
@@ -1106,7 +1033,7 @@
         dl.href = result.url;
         dl.download = result.filename;
         resCard.style.display = "block";
-        log("✅ Sıkıştırma tamamlandı. İstersen tekrar indir.");
+        console.log("✅ Sıkıştırma tamamlandı. İstersen tekrar indir.");
       }
     } else {
       // Çoklu dosya işleme - Modern liste ile
@@ -1125,12 +1052,74 @@
         if (result) successCount++;
       }
 
-      log(
+      console.log(
         `🎉 İşlem tamamlandı! ${successCount}/${files.length} dosya başarılı.`
       );
+      if (successCount > 0) {
+        batchDownloadBtn.style.display = "block"; // Başarılı dosya varsa butonu göster
+      }
     }
 
     runBtn.disabled = false;
     statusEl.textContent = "";
   });
+
+  // Toplu indirme fonksiyonu
+  async function batchDownload() {
+    const zip = new JSZip();
+    let hasFilesToZip = false;
+
+    console.log("Batch download başlatılıyor. FileQueue durumu:", fileQueue);
+
+    for (const fileData of fileQueue) {
+      console.log(
+        `Dosya kontrol ediliyor: ${fileData.file.name}, Status: ${fileData.status}, Result:`,
+        fileData.result
+      );
+
+      if (
+        fileData.status === "completed" &&
+        fileData.result &&
+        fileData.result.blob
+      ) {
+        console.log(`Dosya ZIP'e ekleniyor: ${fileData.result.filename}`);
+        zip.file(fileData.result.filename, fileData.result.blob);
+        hasFilesToZip = true;
+      }
+    }
+
+    if (!hasFilesToZip) {
+      console.error("Hiç hazır dosya bulunamadı!");
+      alert(
+        "İndirilecek hazır dosya bulunamadı. Lütfen önce dosyaları işleyin."
+      );
+      return;
+    }
+
+    batchDownloadBtn.disabled = true;
+    batchDownloadBtn.textContent = "ZIP Oluşturuluyor...";
+
+    zip
+      .generateAsync({ type: "blob" })
+      .then(function (content) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "toplu_sıkıştırılmış_dosyalar.zip";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        batchDownloadBtn.disabled = false;
+        batchDownloadBtn.textContent = "Toplu İndir";
+        console.log("Toplu indirme başarılı!");
+      })
+      .catch((err) => {
+        console.error("ZIP oluşturma hatası:", err);
+        alert("ZIP oluşturulurken bir hata oluştu.");
+        batchDownloadBtn.disabled = false;
+        batchDownloadBtn.textContent = "Toplu İndir";
+      });
+  }
+
+  batchDownloadBtn.addEventListener("click", batchDownload);
 </script>
