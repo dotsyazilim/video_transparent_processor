@@ -9,6 +9,22 @@
     --muted: #9bb0c9;
     --txt: #e6eefb;
     --pri: #3b82f6;
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --border: #1e2633;
+  }
+
+  [data-theme="light"] {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --muted: #64748b;
+    --txt: #1e293b;
+    --pri: #3b82f6;
+    --success: #059669;
+    --error: #dc2626;
+    --warning: #d97706;
+    --border: #e2e8f0;
   }
   * {
     box-sizing: border-box;
@@ -301,16 +317,42 @@
     font-size: 10px;
     font-weight: bold;
   }
-  #log {
-    white-space: pre-wrap;
-    background: #0a1018;
-    color: #bcd3f2;
-    border: 1px solid #1b2534;
-    border-radius: 10px;
-    padding: 10px;
-    height: 200px;
-    overflow: auto;
-    font: 12px ui-monospace, Menlo, Consolas, monospace;
+
+  /* Tema toggle butonu */
+  .theme-toggle {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 18px;
+  }
+
+  .theme-toggle:hover {
+    background: var(--pri);
+    border-color: var(--pri);
+    transform: scale(1.05);
+  }
+
+  .theme-icon {
+    transition: transform 0.3s ease;
+  }
+
+  [data-theme="light"] .theme-icon {
+    transform: rotate(180deg);
+  }
+
+  [data-theme="light"] .theme-toggle .theme-icon::before {
+    content: "☀️";
+  }
+
+  .theme-toggle .theme-icon::before {
+    content: "🌙";
   }
   .grid {
     display: grid;
@@ -321,36 +363,6 @@
     .grid {
       grid-template-columns: 1fr;
     }
-  }
-  .player {
-    position: relative;
-    border: 1px solid #2a3649;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .player video,
-  .player img {
-    width: 100%;
-    max-height: 420px;
-    display: block;
-    background: #000;
-    transition: transform 0.2s ease;
-  }
-
-  .player:hover video,
-  .player:hover img {
-    transform: scale(1.02);
-  }
-  .toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #111a27;
-    border: 1px solid #2b3a52;
-    color: #cfe0ff;
-    padding: 6px 10px;
-    border-radius: 999px;
-    cursor: pointer;
   }
   .actions {
     display: flex;
@@ -365,11 +377,25 @@
 </style>
 
 <div class="wrap">
-  <h1>🎥 Video Compressor</h1>
-  <p style="color: var(--muted); margin-bottom: 20px">
-    Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma oranıyla
-    optimize edin
-  </p>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    "
+  >
+    <div>
+      <h1>🎥 Video Compressor</h1>
+      <p style="color: var(--muted); margin: 0">
+        Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma
+        oranıyla optimize edin
+      </p>
+    </div>
+    <button id="themeToggle" class="theme-toggle" title="Tema değiştir">
+      <span class="theme-icon">🌙</span>
+    </button>
+  </div>
 
   <div class="grid">
     <div class="card">
@@ -377,11 +403,21 @@
         <input id="file" type="file" accept="video/*,image/gif" multiple />
         <div><small>📁 Çoklu dosya seç veya sürükle-bırak</small></div>
       </div>
-      <div style="margin-top: 12px" class="player">
-        <video id="orig" controls muted></video>
-        <img id="origGif" style="display: none" />
+      <div style="margin-top: 8px">
+        <div
+          id="meta"
+          class="badge"
+          style="
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+          "
+        >
+          —
+        </div>
       </div>
-      <div style="margin-top: 8px"><span id="meta" class="badge">—</span></div>
 
       <!-- Modern dosya listesi -->
       <div class="file-list" id="fileList">
@@ -639,14 +675,9 @@
     fileItems = q("#fileItems"),
     listStats = q("#listStats");
   const drop = q("#drop"),
-    orig = q("#orig"),
-    origGif = q("#origGif"),
     meta = q("#meta");
   const resCard = q("#resultCard"),
-    resVideo = q("#resVideo"),
-    resImg = q("#resImg"),
     dl = q("#dl");
-  let isCurrentFileGIF = false;
   let originalFileSize = 0;
   let fileQueue = []; // Dosya kuyruğu
 
@@ -681,21 +712,20 @@
     scaleSettings.style.display = this.value === "scale" ? "flex" : "none";
   });
 
-  // Mouse hover'da video otomatik oynat
-  const playerEl = q(".player");
-  playerEl.addEventListener("mouseenter", function () {
-    const video = q("#orig");
-    if (video.style.display !== "none") {
-      video.play().catch(() => {});
-    }
+  // Tema toggle fonksiyonu
+  const themeToggle = q("#themeToggle");
+  themeToggle.addEventListener("click", function () {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", newTheme);
+
+    // Local storage'a kaydet
+    localStorage.setItem("theme", newTheme);
   });
 
-  playerEl.addEventListener("mouseleave", function () {
-    const video = q("#orig");
-    if (video.style.display !== "none") {
-      video.pause();
-    }
-  });
+  // Sayfa yüklendiğinde tema kontrolü
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
   function fmt(b) {
     if (!b && b !== 0) return "—";
     if (b < 1024) return b + " B";
@@ -769,33 +799,19 @@
 
     const f = files[0]; // İlk dosyayı önizleme için göster
     originalFileSize = f.size;
-    const url = URL.createObjectURL(f);
-    isCurrentFileGIF =
+    const isGIF =
       f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
-
-    if (isCurrentFileGIF) {
-      orig.style.display = "none";
-      origGif.style.display = "block";
-      origGif.src = url;
-    } else {
-      orig.style.display = "block";
-      origGif.style.display = "none";
-      orig.src = url;
-      orig.play().catch(() => {});
-    }
 
     // Çoklu dosya durumunda modern liste göster
     if (files.length === 1) {
       meta.textContent = `${f.name} • ${fmt(f.size)} • ${
-        isCurrentFileGIF ? "GIF" : "Video"
+        isGIF ? "GIF" : "Video"
       }`;
       fileList.style.display = "none";
     } else {
-      meta.textContent = `İlk dosya önizleme: ${f.name}`;
+      meta.textContent = `İlk dosya: ${f.name}`;
       await createFileList(files);
     }
-
-    updateUIForFileType();
 
     // Karşılaştırma istatistiklerini gizle
     comparisonStats.style.display = "none";
@@ -960,48 +976,6 @@
 
   window.downloadFile = downloadFile; // Global erişim için
 
-  function updateUIForFileType() {
-    const isGIF = isCurrentFileGIF;
-
-    q("#compressionSettings").style.display = "flex";
-    q("#advancedSettings").style.display = isGIF ? "none" : "flex"; // Hide audio/twopass for GIF
-
-    // Output format options
-    q("#av1Option").style.display = "flex";
-    q("#h264Option").style.display = "flex";
-    q("#webpOption").style.display = "flex";
-    q("#gifOption").style.display = "flex"; // Always show GIF option
-
-    // Tips
-    q("#outputTip").style.display = "block";
-    q("#gifTip").style.display = isGIF ? "block" : "none";
-
-    // Set appropriate defaults based on file type
-    if (isGIF) {
-      q("#outWebm").checked = false;
-      q("#outAv1").checked = false;
-      q("#outH264").checked = false;
-      q("#outWebp").checked = true; // Default to webp
-      q("#outGif").checked = true; // GIF için default olarak GIF çıktısı da seçili
-      // GIF için preset otomatik olarak gif-optimize yap
-      q("#preset").value = "gif-optimize";
-      // Preset ayarlarını uygula
-      const gifSettings = presets["gif-optimize"];
-      q("#crf").value = gifSettings.crf;
-      q("#crfValue").textContent = gifSettings.crf;
-      q("#fps").value = gifSettings.fps;
-      q("#speed").value = gifSettings.speed;
-    } else {
-      // Video için en iyi sıkıştırma
-      q("#outWebm").checked = true;
-      q("#outAv1").checked = false;
-      q("#outH264").checked = false;
-      q("#outWebp").checked = false;
-      q("#outGif").checked = false;
-      q("#preset").value = "web-optimized";
-    }
-  }
-
   // Çoklu dosya işleme fonksiyonu
   async function processFile(file, fileIndex, totalFiles, fileId = null) {
     log(`📁 İşleniyor (${fileIndex + 1}/${totalFiles}): ${file.name}`);
@@ -1127,23 +1101,12 @@
       const result = await processFile(files[0], 0, 1);
 
       if (result && result.type === "single") {
-        // Tek dosya için önizleme göster
+        // Tek dosya için karşılaştırma göster
         showComparison(result.blob.size, `Sıkıştırma tamamlandı`);
         dl.href = result.url;
         dl.download = result.filename;
-        resVideo.style.display = "none";
-        resImg.style.display = "none";
-
-        if (result.contentType.startsWith("video/")) {
-          resVideo.src = result.url;
-          resVideo.style.display = "block";
-          resVideo.play().catch(() => {});
-        } else {
-          resImg.src = result.url;
-          resImg.style.display = "block";
-        }
         resCard.style.display = "block";
-        log("✅ Önizleme hazır. İstersen tekrar indir.");
+        log("✅ Sıkıştırma tamamlandı. İstersen tekrar indir.");
       }
     } else {
       // Çoklu dosya işleme - Modern liste ile
