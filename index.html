@@ -1,7 +1,6 @@
-cat > static/index.html <<'EOF'
 <!DOCTYPE html>
 <meta charset="utf-8" />
-<title>Video Processor</title>
+<title>Video Compressor - Sıkıştır & Optimize Et</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root {
@@ -47,13 +46,22 @@ cat > static/index.html <<'EOF'
     color: var(--muted);
     display: block;
   }
-  input[type="number"] {
+  input[type="number"],
+  select {
     width: 7rem;
     padding: 8px 10px;
     border-radius: 10px;
     border: 1px solid #1e2633;
     background: #0d141d;
     color: var(--txt);
+  }
+  input[type="range"] {
+    width: 120px;
+    margin: 0 8px;
+  }
+  select {
+    width: auto;
+    min-width: 140px;
   }
   .checkbox {
     display: flex;
@@ -148,7 +156,11 @@ cat > static/index.html <<'EOF'
 </style>
 
 <div class="wrap">
-  <h1>Video Processor</h1>
+  <h1>🎥 Video Compressor</h1>
+  <p style="color: var(--muted); margin-bottom: 20px">
+    Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma oranıyla
+    optimize edin
+  </p>
 
   <div class="grid">
     <div class="card">
@@ -166,89 +178,134 @@ cat > static/index.html <<'EOF'
     <div class="card">
       <div class="row">
         <label
+          >📋 Hazır Preset
+          <select id="preset">
+            <option value="custom">Özel Ayarlar</option>
+            <option value="web-optimized" selected>🌐 Web Optimized</option>
+            <option value="social-media">📱 Sosyal Medya</option>
+            <option value="high-quality">✨ Yüksek Kalite</option>
+            <option value="ultra-compress">🗜️ Ultra Sıkıştırma</option>
+            <option value="gif-optimize">🎬 GIF Optimize</option></select
+          ><small>Hızlı başlangıç için preset seç</small></label
+        >
+        <label
+          >📐 Çözünürlük Modu
+          <select id="resolutionMode">
+            <option value="preserve" selected>Orijinal Boyutu Koru</option>
+            <option value="scale">Yeniden Boyutlandır</option></select
+          ><small>Video boyutunu koruyup korumayacağını belirle</small></label
+        >
+      </div>
+      <div
+        class="row"
+        id="scaleSettings"
+        style="display: none; margin-top: 6px"
+      >
+        <label
           >Hedef Yükseklik
           <input
-            id="height"
+            id="targetHeight"
             type="number"
             value="720"
             min="144"
             max="2160"
-          /><small>Genel akış için 720p yeterli</small></label
-        >
+          />
+          <small>Genişlik otomatik hesaplanır</small>
+        </label>
         <label
-          >FPS
-          <input id="fps" type="number" value="24" min="8" max="60" /><small
-            >Akıcı değilse 30</small
+          >Maksimum Genişlik
+          <input
+            id="maxWidth"
+            type="number"
+            value="1280"
+            min="256"
+            max="3840"
+          />
+          <small>Genişlik sınırı</small>
+        </label>
+      </div>
+      <div class="row">
+        <label
+          >⚡ FPS
+          <input id="fps" type="number" value="30" min="8" max="60" />
+          <small>Kare hızı (24/30/60)</small>
+        </label>
+      </div>
+      <div class="row" style="margin-top: 6px" id="compressionSettings">
+        <label
+          >🎯 Kalite (CRF)
+          <input
+            id="crf"
+            type="range"
+            min="18"
+            max="40"
+            value="23"
+            oninput="document.getElementById('crfValue').textContent = this.value"
+          />
+          <span id="crfValue" style="font-weight: bold; color: var(--pri)"
+            >23</span
+          >
+          <small>18=Mükemmel, 23=Çok İyi, 28=İyi, 35=Orta, 40=Düşük</small>
+        </label>
+        <label
+          >⚙️ Encoding Hızı
+          <select id="speed">
+            <option value="veryslow">Çok Yavaş (En iyi kalite)</option>
+            <option value="slow">Yavaş (Çok iyi)</option>
+            <option value="medium" selected>Orta (İyi)</option>
+            <option value="fast">Hızlı</option>
+            <option value="veryfast">Çok Hızlı</option>
+            <option value="ultrafast">Ultra Hızlı</option></select
+          ><small>Kalite/hız dengesi</small></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="advancedSettings">
+        <label
+          >İki Geçişli Encoding <input id="twopass" type="checkbox" /><small
+            >Daha iyi bitrate dağılımı</small
           ></label
         >
-      </div>
-      <div class="row" style="margin-top: 6px" id="videoSettings">
         <label
-          >Alpha similarity
-          <input
-            id="similarity"
-            type="number"
-            step="0.01"
-            value="0.12"
-            min="0"
-            max="0.25"
-          /><small>Beyaz renk hassasiyeti</small></label
-        >
-        <label
-          >Blend
-          <input
-            id="blend"
-            type="number"
-            step="0.01"
-            value="0.03"
-            min="0"
-            max="0.10"
-          /><small>Kenar yumuşatma</small></label
-        >
-      </div>
-      <div class="row" style="margin-top: 6px" id="videoSettings2">
-        <label
-          >Beyaz Eşiği
-          <input
-            id="whiteThreshold"
-            type="number"
-            step="0.01"
-            value="0.95"
-            min="0.8"
-            max="1.0"
-          /><small>Beyaz tespit hassasiyeti</small></label
-        >
-      </div>
-      <div class="row" style="margin-top: 6px">
-        <label class="checkbox"
-          ><input id="luma" type="checkbox" checked /> Chroma olmazsa luma
-          fallback</label
+          >Ses Kalitesi
+          <select id="audioQuality">
+            <option value="96k">96k (Düşük)</option>
+            <option value="128k" selected>128k (Orta)</option>
+            <option value="192k">192k (Yüksek)</option>
+            <option value="320k">320k (Ultra)</option></select
+          ><small>Audio bitrate</small></label
         >
       </div>
       <div class="row" style="margin-top: 6px" id="outputFormats">
         <label class="checkbox"
-          ><input id="outWebp" type="checkbox" checked />
-          <span id="webpLabel">Animated WebP (şeffaf)</span></label
+          ><input id="outWebm" type="checkbox" checked /> WebM (VP9)
+          <small class="tip">En iyi sıkıştırma</small></label
         >
         <label class="checkbox" id="av1Option"
-          ><input id="outAv1" type="checkbox" /> WebM (AV1/VP9)
-          <small class="tip">akış/paylaşım</small></label
+          ><input id="outAv1" type="checkbox" /> WebM (AV1)
+          <small class="tip">Yeni codec, daha iyi sıkıştırma</small></label
         >
         <label class="checkbox" id="h264Option"
           ><input id="outH264" type="checkbox" /> MP4 (H.264)
-          <small class="tip">en geniş uyumluluk</small></label
+          <small class="tip">En geniş uyumluluk</small></label
+        >
+        <label class="checkbox" id="webpOption"
+          ><input id="outWebp" type="checkbox" /> WebP
+          <small class="tip">Web için mükemmel</small></label
+        >
+        <label class="checkbox" id="gifOption"
+          ><input id="outGif" type="checkbox" /> GIF
+          <small class="tip">Animasyonlu GIF</small></label
         >
       </div>
       <div class="tip" style="margin-top: 6px" id="outputTip">
-        Birden fazla çıktı seçersen <b>ZIP</b> iner; tek çıktı seçersen
-        tarayıcıda önizlenir.
+        <b>WebM VP9</b> en iyi sıkıştırma sağlar. Birden fazla format seçerseniz
+        <b>ZIP</b> indirilir.
       </div>
       <div class="tip" style="margin-top: 6px; display: none" id="gifTip">
-        GIF dosyalar için <b>WebP</b> ve sıkıştırılmış <b>GIF</b> çıktısı
-        üretilir.
+        GIF için otomatik <b>WebP dönüşümü</b> önerilir - çok daha küçük boyut!
       </div>
       <div class="actions">
-        <button class="btn" id="run">İşle</button>
+        <button class="btn" id="run">🎯 Sıkıştır & Optimize Et</button>
         <small id="status"></small>
       </div>
     </div>
@@ -263,8 +320,38 @@ cat > static/index.html <<'EOF'
         margin-bottom: 8px;
       "
     >
-      <div>Sonuç Önizleme</div>
-      <a id="dl" class="badge" href="#" download>İndir</a>
+      <div>📊 Sonuç & Karşılaştırma</div>
+      <a id="dl" class="badge" href="#" download>💾 İndir</a>
+    </div>
+    <div id="comparisonStats" style="margin-bottom: 10px; display: none">
+      <div
+        style="
+          display: flex;
+          gap: 15px;
+          align-items: center;
+          margin-bottom: 8px;
+        "
+      >
+        <div class="badge" style="background: #1e3a8a">
+          📏 Orijinal: <span id="originalSize">—</span>
+        </div>
+        <div class="badge" style="background: #047857">
+          🗜️ Sıkıştırılmış: <span id="compressedSize">—</span>
+        </div>
+        <div class="badge" style="background: #7c3aed">
+          💰 Kazanç: <span id="savings">—</span>
+        </div>
+      </div>
+      <div
+        style="
+          background: #0a1018;
+          border-radius: 8px;
+          padding: 8px;
+          font-size: 12px;
+        "
+      >
+        <div id="compressionDetails">—</div>
+      </div>
     </div>
     <div class="player" id="resultPlayer">
       <video id="resVideo" controls loop style="display: none"></video>
@@ -294,6 +381,16 @@ cat > static/index.html <<'EOF'
     runBtn = q("#run"),
     statusEl = q("#status"),
     logEl = q("#log");
+
+  // Yeni elementler
+  const presetSelect = q("#preset"),
+    resolutionModeSelect = q("#resolutionMode"),
+    scaleSettings = q("#scaleSettings"),
+    comparisonStats = q("#comparisonStats"),
+    originalSizeEl = q("#originalSize"),
+    compressedSizeEl = q("#compressedSize"),
+    savingsEl = q("#savings"),
+    compressionDetailsEl = q("#compressionDetails");
   const drop = q("#drop"),
     orig = q("#orig"),
     origGif = q("#origGif"),
@@ -303,11 +400,38 @@ cat > static/index.html <<'EOF'
     resImg = q("#resImg"),
     dl = q("#dl");
   let isCurrentFileGIF = false;
+  let originalFileSize = 0;
+
+  // Preset ayarları
+  const presets = {
+    "web-optimized": { crf: 28, fps: 30, speed: "medium" },
+    "social-media": { crf: 32, fps: 30, speed: "fast" },
+    "high-quality": { crf: 20, fps: 60, speed: "slow" },
+    "ultra-compress": { crf: 38, fps: 24, speed: "fast" },
+    "gif-optimize": { crf: 28, fps: 20, speed: "medium" }, // GIF için daha iyi kalite
+  };
 
   function log(s) {
     logEl.textContent += s + "\\n";
     logEl.scrollTop = logEl.scrollHeight;
   }
+
+  // Preset değiştiğinde ayarları uygula
+  presetSelect.addEventListener("change", function () {
+    const preset = this.value;
+    if (preset !== "custom" && presets[preset]) {
+      const settings = presets[preset];
+      q("#crf").value = settings.crf;
+      q("#crfValue").textContent = settings.crf;
+      q("#fps").value = settings.fps;
+      q("#speed").value = settings.speed;
+    }
+  });
+
+  // Çözünürlük modu değiştiğinde
+  resolutionModeSelect.addEventListener("change", function () {
+    scaleSettings.style.display = this.value === "scale" ? "flex" : "none";
+  });
   function fmt(b) {
     if (!b && b !== 0) return "—";
     const u = ["B", "KB", "MB", "GB"];
@@ -339,6 +463,7 @@ cat > static/index.html <<'EOF'
   function previewLocal() {
     const f = fileInput.files[0];
     if (!f) return;
+    originalFileSize = f.size; // Orijinal boyutu kaydet
     const url = URL.createObjectURL(f);
     isCurrentFileGIF =
       f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
@@ -358,39 +483,63 @@ cat > static/index.html <<'EOF'
       isCurrentFileGIF ? "GIF" : "Video"
     }`;
     updateUIForFileType();
+
+    // Karşılaştırma istatistiklerini gizle
+    comparisonStats.style.display = "none";
+  }
+
+  // Karşılaştırma istatistiklerini göster
+  function showComparison(compressedSize, details) {
+    originalSizeEl.textContent = fmt(originalFileSize);
+    compressedSizeEl.textContent = fmt(compressedSize);
+
+    const savings = originalFileSize - compressedSize;
+    const savingsPercent = ((savings / originalFileSize) * 100).toFixed(1);
+    savingsEl.textContent = `${fmt(savings)} (${savingsPercent}%)`;
+
+    compressionDetailsEl.textContent = details || "Sıkıştırma tamamlandı";
+    comparisonStats.style.display = "block";
   }
 
   function updateUIForFileType() {
     const isGIF = isCurrentFileGIF;
 
-    // Video-specific settings
-    q("#videoSettings").style.display = isGIF ? "none" : "flex";
-    q("#videoSettings2").style.display = isGIF ? "none" : "flex";
-    q("#luma").parentElement.parentElement.style.display = isGIF
-      ? "none"
-      : "flex";
+    q("#compressionSettings").style.display = "flex";
+    q("#advancedSettings").style.display = isGIF ? "none" : "flex"; // Hide audio/twopass for GIF
 
     // Output format options
-    q("#av1Option").style.display = isGIF ? "none" : "flex";
-    q("#h264Option").style.display = isGIF ? "none" : "flex";
-    q("#webpLabel").textContent = isGIF
-      ? "Optimize WebP (küçük boyut)"
-      : "Animated WebP (şeffaf)";
+    q("#av1Option").style.display = "flex";
+    q("#h264Option").style.display = "flex";
+    q("#webpOption").style.display = "flex";
+    q("#gifOption").style.display = "flex"; // Always show GIF option
 
     // Tips
-    q("#outputTip").style.display = isGIF ? "none" : "block";
+    q("#outputTip").style.display = "block";
     q("#gifTip").style.display = isGIF ? "block" : "none";
 
     // Set appropriate defaults based on file type
     if (isGIF) {
-      q("#outWebp").checked = true;
+      q("#outWebm").checked = false;
       q("#outAv1").checked = false;
       q("#outH264").checked = false;
+      q("#outWebp").checked = true; // Default to webp
+      q("#outGif").checked = true; // GIF için default olarak GIF çıktısı da seçili
+      // GIF için preset otomatik olarak gif-optimize yap
+      q("#preset").value = "gif-optimize";
+      // Preset ayarlarını uygula
+      const gifSettings = presets["gif-optimize"];
+      q("#crf").value = gifSettings.crf;
+      q("#crfValue").textContent = gifSettings.crf;
+      q("#fps").value = gifSettings.fps;
+      q("#speed").value = gifSettings.speed;
     } else {
-      // Video için şeffaf WebP default
-      q("#outWebp").checked = true;
+      // Video için en iyi sıkıştırma
+      q("#outWebm").checked = true;
       q("#outAv1").checked = false;
       q("#outH264").checked = false;
+      q("#outWebp").checked = false;
+      q("#outGif").checked = false;
+      q("#preset").value = "web-optimized";
     }
   }
 
@@ -401,11 +550,23 @@ cat > static/index.html <<'EOF'
       return;
     }
     const fd = new FormData();
-    ["height", "fps", "similarity", "blend", "whiteThreshold"].forEach((id) =>
-      fd.append(id, q("#" + id).value)
-    );
-    ["luma", "outWebp", "outAv1", "outH264"].forEach((id) =>
-      fd.append(id, q("#" + id).checked ? "true" : "false")
+    // Sıkıştırma ayarları
+    [
+      "preset",
+      "resolutionMode",
+      "targetHeight",
+      "maxWidth",
+      "fps",
+      "crf",
+      "speed",
+      "audioQuality",
+    ].forEach((id) => {
+      const el = q("#" + id);
+      if (el) fd.append(id, el.value);
+    });
+    // Boolean ayarlar
+    ["twopass", "outWebm", "outAv1", "outH264", "outWebp", "outGif"].forEach(
+      (id) => fd.append(id, q("#" + id).checked ? "true" : "false")
     );
     fd.append("file", f);
     runBtn.disabled = true;
@@ -436,6 +597,9 @@ cat > static/index.html <<'EOF'
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         dl.href = url;
+
+        // Karşılaştırma istatistiklerini göster
+        showComparison(blob.size, `Sıkıştırma tamamlandı - Tek dosya önizleme`);
         const ext = ct.includes("webm")
           ? ".webm"
           : ct.includes("mp4")
@@ -469,4 +633,3 @@ cat > static/index.html <<'EOF'
     }
   });
 </script>
-EOF

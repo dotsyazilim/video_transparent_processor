@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Video Compressor - Sıkıştır & Optimize Et</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root {
+    --bg: #0b0f14;
+    --card: #121821;
+    --muted: #9bb0c9;
+    --txt: #e6eefb;
+    --pri: #3b82f6;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--txt);
+    font: 15px/1.5 Inter, system-ui, Segoe UI, Roboto, sans-serif;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid #1e2633;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  label > small {
+    color: var(--muted);
+    display: block;
+  }
+  input[type="number"],
+  select {
+    width: 7rem;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #1e2633;
+    background: #0d141d;
+    color: var(--txt);
+  }
+  input[type="range"] {
+    width: 120px;
+    margin: 0 8px;
+  }
+  select {
+    width: auto;
+    min-width: 140px;
+  }
+  .checkbox {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn {
+    padding: 10px 16px;
+    background: var(--pri);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .drop {
+    border: 2px dashed #304056;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    background: #0d141d;
+  }
+  small {
+    color: var(--muted);
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #2b3a52;
+    color: #bcd3f2;
+    font-size: 12px;
+  }
+  #log {
+    white-space: pre-wrap;
+    background: #0a1018;
+    color: #bcd3f2;
+    border: 1px solid #1b2534;
+    border-radius: 10px;
+    padding: 10px;
+    height: 200px;
+    overflow: auto;
+    font: 12px ui-monospace, Menlo, Consolas, monospace;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 1000px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .player {
+    position: relative;
+    border: 1px solid #2a3649;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .player video,
+  .player img {
+    width: 100%;
+    max-height: 420px;
+    display: block;
+    background: #000;
+  }
+  .toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #111a27;
+    border: 1px solid #2b3a52;
+    color: #cfe0ff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    align-items: center;
+  }
+  .tip {
+    color: #9bb0c9;
+    font-size: 13px;
+  }
+</style>
+
+<div class="wrap">
+  <h1>🎥 Video Compressor</h1>
+  <p style="color: var(--muted); margin-bottom: 20px">
+    Video ve GIF dosyalarınızı yüksek kalite ile maksimum sıkıştırma oranıyla
+    optimize edin
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="drop" id="drop">
+        <input id="file" type="file" accept="video/*,image/gif" />
+        <div><small>Seç veya sürükle-bırak</small></div>
+      </div>
+      <div style="margin-top: 12px" class="player">
+        <video id="orig" controls muted></video>
+        <img id="origGif" style="display: none" />
+      </div>
+      <div style="margin-top: 8px"><span id="meta" class="badge">—</span></div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <label
+          >📋 Hazır Preset
+          <select id="preset">
+            <option value="custom">Özel Ayarlar</option>
+            <option value="web-optimized" selected>🌐 Web Optimized</option>
+            <option value="social-media">📱 Sosyal Medya</option>
+            <option value="high-quality">✨ Yüksek Kalite</option>
+            <option value="ultra-compress">🗜️ Ultra Sıkıştırma</option>
+            <option value="gif-optimize">🎬 GIF Optimize</option></select
+          ><small>Hızlı başlangıç için preset seç</small></label
+        >
+        <label
+          >📐 Çözünürlük Modu
+          <select id="resolutionMode">
+            <option value="preserve" selected>Orijinal Boyutu Koru</option>
+            <option value="scale">Yeniden Boyutlandır</option></select
+          ><small>Video boyutunu koruyup korumayacağını belirle</small></label
+        >
+      </div>
+      <div
+        class="row"
+        id="scaleSettings"
+        style="display: none; margin-top: 6px"
+      >
+        <label
+          >Hedef Yükseklik
+          <input
+            id="targetHeight"
+            type="number"
+            value="720"
+            min="144"
+            max="2160"
+          />
+          <small>Genişlik otomatik hesaplanır</small>
+        </label>
+        <label
+          >Maksimum Genişlik
+          <input
+            id="maxWidth"
+            type="number"
+            value="1280"
+            min="256"
+            max="3840"
+          />
+          <small>Genişlik sınırı</small>
+        </label>
+      </div>
+      <div class="row">
+        <label
+          >⚡ FPS
+          <input id="fps" type="number" value="30" min="8" max="60" />
+          <small>Kare hızı (24/30/60)</small>
+        </label>
+      </div>
+      <div class="row" style="margin-top: 6px" id="compressionSettings">
+        <label
+          >🎯 Kalite (CRF)
+          <input
+            id="crf"
+            type="range"
+            min="18"
+            max="40"
+            value="23"
+            oninput="document.getElementById('crfValue').textContent = this.value"
+          />
+          <span id="crfValue" style="font-weight: bold; color: var(--pri)"
+            >23</span
+          >
+          <small>18=Mükemmel, 23=Çok İyi, 28=İyi, 35=Orta, 40=Düşük</small>
+        </label>
+        <label
+          >⚙️ Encoding Hızı
+          <select id="speed">
+            <option value="veryslow">Çok Yavaş (En iyi kalite)</option>
+            <option value="slow">Yavaş (Çok iyi)</option>
+            <option value="medium" selected>Orta (İyi)</option>
+            <option value="fast">Hızlı</option>
+            <option value="veryfast">Çok Hızlı</option>
+            <option value="ultrafast">Ultra Hızlı</option></select
+          ><small>Kalite/hız dengesi</small></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="advancedSettings">
+        <label
+          >İki Geçişli Encoding <input id="twopass" type="checkbox" /><small
+            >Daha iyi bitrate dağılımı</small
+          ></label
+        >
+        <label
+          >Ses Kalitesi
+          <select id="audioQuality">
+            <option value="96k">96k (Düşük)</option>
+            <option value="128k" selected>128k (Orta)</option>
+            <option value="192k">192k (Yüksek)</option>
+            <option value="320k">320k (Ultra)</option></select
+          ><small>Audio bitrate</small></label
+        >
+      </div>
+      <div class="row" style="margin-top: 6px" id="outputFormats">
+        <label class="checkbox"
+          ><input id="outWebm" type="checkbox" checked /> WebM (VP9)
+          <small class="tip">En iyi sıkıştırma</small></label
+        >
+        <label class="checkbox" id="av1Option"
+          ><input id="outAv1" type="checkbox" /> WebM (AV1)
+          <small class="tip">Yeni codec, daha iyi sıkıştırma</small></label
+        >
+        <label class="checkbox" id="h264Option"
+          ><input id="outH264" type="checkbox" /> MP4 (H.264)
+          <small class="tip">En geniş uyumluluk</small></label
+        >
+        <label class="checkbox" id="webpOption"
+          ><input id="outWebp" type="checkbox" /> WebP
+          <small class="tip">Web için mükemmel</small></label
+        >
+        <label class="checkbox" id="gifOption"
+          ><input id="outGif" type="checkbox" /> GIF
+          <small class="tip">Animasyonlu GIF</small></label
+        >
+      </div>
+      <div class="tip" style="margin-top: 6px" id="outputTip">
+        <b>WebM VP9</b> en iyi sıkıştırma sağlar. Birden fazla format seçerseniz
+        <b>ZIP</b> indirilir.
+      </div>
+      <div class="tip" style="margin-top: 6px; display: none" id="gifTip">
+        GIF için otomatik <b>WebP dönüşümü</b> önerilir - çok daha küçük boyut!
+      </div>
+      <div class="actions">
+        <button class="btn" id="run">🎯 Sıkıştır & Optimize Et</button>
+        <small id="status"></small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="resultCard" style="display: none">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div>📊 Sonuç & Karşılaştırma</div>
+      <a id="dl" class="badge" href="#" download>💾 İndir</a>
+    </div>
+    <div id="comparisonStats" style="margin-bottom: 10px; display: none">
+      <div
+        style="
+          display: flex;
+          gap: 15px;
+          align-items: center;
+          margin-bottom: 8px;
+        "
+      >
+        <div class="badge" style="background: #1e3a8a">
+          📏 Orijinal: <span id="originalSize">—</span>
+        </div>
+        <div class="badge" style="background: #047857">
+          🗜️ Sıkıştırılmış: <span id="compressedSize">—</span>
+        </div>
+        <div class="badge" style="background: #7c3aed">
+          💰 Kazanç: <span id="savings">—</span>
+        </div>
+      </div>
+      <div
+        style="
+          background: #0a1018;
+          border-radius: 8px;
+          padding: 8px;
+          font-size: 12px;
+        "
+      >
+        <div id="compressionDetails">—</div>
+      </div>
+    </div>
+    <div class="player" id="resultPlayer">
+      <video id="resVideo" controls loop style="display: none"></video>
+      <img id="resImg" style="display: none" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div>İşlem Log</div>
+      <a class="badge" href="/api/probe" target="_blank">/api/probe</a>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+
+<script>
+  const q = (s) => document.querySelector(s);
+  const fileInput = q("#file"),
+    runBtn = q("#run"),
+    statusEl = q("#status"),
+    logEl = q("#log");
+
+  // Yeni elementler
+  const presetSelect = q("#preset"),
+    resolutionModeSelect = q("#resolutionMode"),
+    scaleSettings = q("#scaleSettings"),
+    comparisonStats = q("#comparisonStats"),
+    originalSizeEl = q("#originalSize"),
+    compressedSizeEl = q("#compressedSize"),
+    savingsEl = q("#savings"),
+    compressionDetailsEl = q("#compressionDetails");
+  const drop = q("#drop"),
+    orig = q("#orig"),
+    origGif = q("#origGif"),
+    meta = q("#meta");
+  const resCard = q("#resultCard"),
+    resVideo = q("#resVideo"),
+    resImg = q("#resImg"),
+    dl = q("#dl");
+  let isCurrentFileGIF = false;
+  let originalFileSize = 0;
+
+  // Preset ayarları
+  const presets = {
+    "web-optimized": { crf: 28, fps: 30, speed: "medium" },
+    "social-media": { crf: 32, fps: 30, speed: "fast" },
+    "high-quality": { crf: 20, fps: 60, speed: "slow" },
+    "ultra-compress": { crf: 38, fps: 24, speed: "fast" },
+    "gif-optimize": { crf: 28, fps: 20, speed: "medium" }, // GIF için daha iyi kalite
+  };
+
+  function log(s) {
+    logEl.textContent += s + "\\n";
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  // Preset değiştiğinde ayarları uygula
+  presetSelect.addEventListener("change", function () {
+    const preset = this.value;
+    if (preset !== "custom" && presets[preset]) {
+      const settings = presets[preset];
+      q("#crf").value = settings.crf;
+      q("#crfValue").textContent = settings.crf;
+      q("#fps").value = settings.fps;
+      q("#speed").value = settings.speed;
+    }
+  });
+
+  // Çözünürlük modu değiştiğinde
+  resolutionModeSelect.addEventListener("change", function () {
+    scaleSettings.style.display = this.value === "scale" ? "flex" : "none";
+  });
+  function fmt(b) {
+    if (!b && b !== 0) return "—";
+    const u = ["B", "KB", "MB", "GB"];
+    let i = 0;
+    while (b >= 1024 && i < u.length - 1) {
+      b /= 1024;
+      i++;
+    }
+    return b.toFixed(1) + " " + u[i];
+  }
+
+  drop.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    drop.style.background = "#0f1722";
+  });
+  drop.addEventListener("dragleave", (e) => {
+    drop.style.background = "";
+  });
+  drop.addEventListener("drop", (e) => {
+    e.preventDefault();
+    drop.style.background = "";
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      fileInput.files = e.dataTransfer.files;
+      previewLocal();
+    }
+  });
+  fileInput.addEventListener("change", previewLocal);
+
+  function previewLocal() {
+    const f = fileInput.files[0];
+    if (!f) return;
+    originalFileSize = f.size; // Orijinal boyutu kaydet
+    const url = URL.createObjectURL(f);
+    isCurrentFileGIF =
+      f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
+
+    if (isCurrentFileGIF) {
+      orig.style.display = "none";
+      origGif.style.display = "block";
+      origGif.src = url;
+    } else {
+      orig.style.display = "block";
+      origGif.style.display = "none";
+      orig.src = url;
+      orig.play().catch(() => {});
+    }
+
+    meta.textContent = `${f.name} • ${fmt(f.size)} • ${
+      isCurrentFileGIF ? "GIF" : "Video"
+    }`;
+    updateUIForFileType();
+
+    // Karşılaştırma istatistiklerini gizle
+    comparisonStats.style.display = "none";
+  }
+
+  // Karşılaştırma istatistiklerini göster
+  function showComparison(compressedSize, details) {
+    originalSizeEl.textContent = fmt(originalFileSize);
+    compressedSizeEl.textContent = fmt(compressedSize);
+
+    const savings = originalFileSize - compressedSize;
+    const savingsPercent = ((savings / originalFileSize) * 100).toFixed(1);
+    savingsEl.textContent = `${fmt(savings)} (${savingsPercent}%)`;
+
+    compressionDetailsEl.textContent = details || "Sıkıştırma tamamlandı";
+    comparisonStats.style.display = "block";
+  }
+
+  function updateUIForFileType() {
+    const isGIF = isCurrentFileGIF;
+
+    q("#compressionSettings").style.display = "flex";
+    q("#advancedSettings").style.display = isGIF ? "none" : "flex"; // Hide audio/twopass for GIF
+
+    // Output format options
+    q("#av1Option").style.display = "flex";
+    q("#h264Option").style.display = "flex";
+    q("#webpOption").style.display = "flex";
+    q("#gifOption").style.display = "flex"; // Always show GIF option
+
+    // Tips
+    q("#outputTip").style.display = "block";
+    q("#gifTip").style.display = isGIF ? "block" : "none";
+
+    // Set appropriate defaults based on file type
+    if (isGIF) {
+      q("#outWebm").checked = false;
+      q("#outAv1").checked = false;
+      q("#outH264").checked = false;
+      q("#outWebp").checked = true; // Default to webp
+      q("#outGif").checked = true; // GIF için default olarak GIF çıktısı da seçili
+      // GIF için preset otomatik olarak gif-optimize yap
+      q("#preset").value = "gif-optimize";
+      // Preset ayarlarını uygula
+      const gifSettings = presets["gif-optimize"];
+      q("#crf").value = gifSettings.crf;
+      q("#crfValue").textContent = gifSettings.crf;
+      q("#fps").value = gifSettings.fps;
+      q("#speed").value = gifSettings.speed;
+    } else {
+      // Video için en iyi sıkıştırma
+      q("#outWebm").checked = true;
+      q("#outAv1").checked = false;
+      q("#outH264").checked = false;
+      q("#outWebp").checked = false;
+      q("#outGif").checked = false;
+      q("#preset").value = "web-optimized";
+    }
+  }
+
+  runBtn.addEventListener("click", async () => {
+    const f = fileInput.files[0];
+    if (!f) {
+      alert("Video/GIF dosyası seç.");
+      return;
+    }
+    const fd = new FormData();
+    // Sıkıştırma ayarları
+    [
+      "preset",
+      "resolutionMode",
+      "targetHeight",
+      "maxWidth",
+      "fps",
+      "crf",
+      "speed",
+      "audioQuality",
+    ].forEach((id) => {
+      const el = q("#" + id);
+      if (el) fd.append(id, el.value);
+    });
+    // Boolean ayarlar
+    ["twopass", "outWebm", "outAv1", "outH264", "outWebp", "outGif"].forEach(
+      (id) => fd.append(id, q("#" + id).checked ? "true" : "false")
+    );
+    fd.append("file", f);
+    runBtn.disabled = true;
+    statusEl.textContent = "İşleniyor…";
+    logEl.textContent = "";
+    resCard.style.display = "none";
+
+    try {
+      const res = await fetch("/api/process", { method: "POST", body: fd });
+      const ct = res.headers.get("Content-Type") || "";
+      if (!res.ok) {
+        const txt = await res.text();
+        log("Hata: " + txt);
+        alert("Hata: " + txt);
+      } else if (ct.startsWith("application/zip")) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = f.name.replace(/\.[^.]+$/, "") + "_processed.zip";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        log("✓ ZIP indirildi.");
+      } else {
+        // tek dosya → önizle
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        dl.href = url;
+
+        // Karşılaştırma istatistiklerini göster
+        showComparison(blob.size, `Sıkıştırma tamamlandı - Tek dosya önizleme`);
+        const ext = ct.includes("webm")
+          ? ".webm"
+          : ct.includes("mp4")
+          ? ".mp4"
+          : ct.includes("webp")
+          ? ".webp"
+          : ct.includes("gif")
+          ? ".gif"
+          : "";
+        dl.download = f.name.replace(/\.[^.]+$/, "") + "_processed" + ext;
+        resVideo.style.display = "none";
+        resImg.style.display = "none";
+        if (ct.startsWith("video/")) {
+          resVideo.src = url;
+          resVideo.style.display = "block";
+          resVideo.play().catch(() => {});
+        } else {
+          resImg.src = url;
+          resImg.style.display = "block";
+        }
+        orig.style.display = "block";
+        resCard.style.display = "block";
+        log("✓ Önizleme hazır. İstersen indir.");
+      }
+    } catch (err) {
+      log("Fetch hata: " + err);
+      alert(err);
+    } finally {
+      runBtn.disabled = false;
+      statusEl.textContent = "";
+    }
+  });
+</script>
