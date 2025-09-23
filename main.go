@@ -26,7 +26,7 @@ func main() {
 		w.WriteHeader(200)
 		_, _ = w.Write([]byte("ok"))
 	})
-	mux.Handle("/", http.FileServer(http.Dir("./static")))
+	mux.Handle("/", http.FileServer(http.Dir(".")))
 	mux.HandleFunc("/api/process", handleProcess)
 	mux.HandleFunc("/api/probe", handleProbe)
 
