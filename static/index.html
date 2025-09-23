@@ -165,8 +165,8 @@
   <div class="grid">
     <div class="card">
       <div class="drop" id="drop">
-        <input id="file" type="file" accept="video/*,image/gif" />
-        <div><small>Seç veya sürükle-bırak</small></div>
+        <input id="file" type="file" accept="video/*,image/gif" multiple />
+        <div><small>📁 Çoklu dosya seç veya sürükle-bırak</small></div>
       </div>
       <div style="margin-top: 12px" class="player">
         <video id="orig" controls muted></video>
@@ -304,8 +304,11 @@
       <div class="tip" style="margin-top: 6px; display: none" id="gifTip">
         GIF için otomatik <b>WebP dönüşümü</b> önerilir - çok daha küçük boyut!
       </div>
+      <div class="tip" style="margin-top: 6px; padding: 8px; border: 1px solid #2b3a52; border-radius: 6px; background: #0d141d;">
+        💡 <b>Çoklu Dosya:</b> Birden fazla dosya seçin, hepsi tek tek otomatik işlenir ve indirilir!
+      </div>
       <div class="actions">
-        <button class="btn" id="run">🎯 Sıkıştır & Optimize Et</button>
+        <button class="btn" id="run">🎯 Sıkıştır & Optimize Et (Çoklu Dosya Destekli)</button>
         <small id="status"></small>
       </div>
     </div>
@@ -453,7 +456,7 @@
   drop.addEventListener("drop", (e) => {
     e.preventDefault();
     drop.style.background = "";
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       fileInput.files = e.dataTransfer.files;
       previewLocal();
     }
@@ -461,9 +464,11 @@
   fileInput.addEventListener("change", previewLocal);
 
   function previewLocal() {
-    const f = fileInput.files[0];
-    if (!f) return;
-    originalFileSize = f.size; // Orijinal boyutu kaydet
+    const files = fileInput.files;
+    if (!files || files.length === 0) return;
+    
+    const f = files[0]; // İlk dosyayı önizleme için göster
+    originalFileSize = f.size;
     const url = URL.createObjectURL(f);
     isCurrentFileGIF =
       f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif");
@@ -479,9 +484,19 @@
       orig.play().catch(() => {});
     }
 
-    meta.textContent = `${f.name} • ${fmt(f.size)} • ${
-      isCurrentFileGIF ? "GIF" : "Video"
-    }`;
+    // Çoklu dosya durumunda bilgi göster
+    if (files.length === 1) {
+      meta.textContent = `${f.name} • ${fmt(f.size)} • ${
+        isCurrentFileGIF ? "GIF" : "Video"
+      }`;
+    } else {
+      let totalSize = 0;
+      for (let i = 0; i < files.length; i++) {
+        totalSize += files[i].size;
+      }
+      meta.textContent = `${files.length} dosya seçildi • Toplam: ${fmt(totalSize)} • İlk dosya: ${f.name}`;
+    }
+    
     updateUIForFileType();
 
     // Karşılaştırma istatistiklerini gizle
@@ -543,12 +558,10 @@
     }
   }
 
-  runBtn.addEventListener("click", async () => {
-    const f = fileInput.files[0];
-    if (!f) {
-      alert("Video/GIF dosyası seç.");
-      return;
-    }
+  // Çoklu dosya işleme fonksiyonu
+  async function processFile(file, fileIndex, totalFiles) {
+    log(`📁 İşleniyor (${fileIndex + 1}/${totalFiles}): ${file.name}`);
+    
     const fd = new FormData();
     // Sıkıştırma ayarları
     [
@@ -568,38 +581,31 @@
     ["twopass", "outWebm", "outAv1", "outH264", "outWebp", "outGif"].forEach(
       (id) => fd.append(id, q("#" + id).checked ? "true" : "false")
     );
-    fd.append("file", f);
-    runBtn.disabled = true;
-    statusEl.textContent = "İşleniyor…";
-    logEl.textContent = "";
-    resCard.style.display = "none";
+    fd.append("file", file);
 
     try {
       const res = await fetch("/api/process", { method: "POST", body: fd });
       const ct = res.headers.get("Content-Type") || "";
       if (!res.ok) {
         const txt = await res.text();
-        log("Hata: " + txt);
-        alert("Hata: " + txt);
+        log(`❌ Hata (${file.name}): ${txt}`);
+        return null;
       } else if (ct.startsWith("application/zip")) {
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = f.name.replace(/\.[^.]+$/, "") + "_processed.zip";
+        a.download = file.name.replace(/\.[^.]+$/, "") + "_processed.zip";
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-        log("✓ ZIP indirildi.");
+        log(`✅ ZIP indirildi: ${file.name}`);
+        return { blob, filename: file.name, type: 'zip' };
       } else {
-        // tek dosya → önizle
+        // tek dosya
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        dl.href = url;
-
-        // Karşılaştırma istatistiklerini göster
-        showComparison(blob.size, `Sıkıştırma tamamlandı - Tek dosya önizleme`);
         const ext = ct.includes("webm")
           ? ".webm"
           : ct.includes("mp4")
@@ -609,27 +615,74 @@
           : ct.includes("gif")
           ? ".gif"
           : "";
-        dl.download = f.name.replace(/\.[^.]+$/, "") + "_processed" + ext;
+        const filename = file.name.replace(/\.[^.]+$/, "") + "_processed" + ext;
+        
+        // Otomatik indirme
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        log(`✅ İndirildi: ${filename}`);
+        return { blob, filename, type: 'single', url, contentType: ct };
+      }
+    } catch (err) {
+      log(`❌ Fetch hata (${file.name}): ${err}`);
+      return null;
+    }
+  }
+
+  runBtn.addEventListener("click", async () => {
+    const files = fileInput.files;
+    if (!files || files.length === 0) {
+      alert("En az 1 dosya seçin.");
+      return;
+    }
+
+    runBtn.disabled = true;
+    logEl.textContent = "";
+    resCard.style.display = "none";
+
+    if (files.length === 1) {
+      statusEl.textContent = "İşleniyor…";
+      const result = await processFile(files[0], 0, 1);
+      
+      if (result && result.type === 'single') {
+        // Tek dosya için önizleme göster
+        showComparison(result.blob.size, `Sıkıştırma tamamlandı`);
+        dl.href = result.url;
+        dl.download = result.filename;
         resVideo.style.display = "none";
         resImg.style.display = "none";
-        if (ct.startsWith("video/")) {
-          resVideo.src = url;
+        
+        if (result.contentType.startsWith("video/")) {
+          resVideo.src = result.url;
           resVideo.style.display = "block";
           resVideo.play().catch(() => {});
         } else {
-          resImg.src = url;
+          resImg.src = result.url;
           resImg.style.display = "block";
         }
-        orig.style.display = "block";
         resCard.style.display = "block";
-        log("✓ Önizleme hazır. İstersen indir.");
+        log("✅ Önizleme hazır. İstersen tekrar indir.");
       }
-    } catch (err) {
-      log("Fetch hata: " + err);
-      alert(err);
-    } finally {
-      runBtn.disabled = false;
-      statusEl.textContent = "";
+    } else {
+      // Çoklu dosya işleme
+      statusEl.textContent = `Çoklu dosya işleniyor… (0/${files.length})`;
+      let successCount = 0;
+      
+      for (let i = 0; i < files.length; i++) {
+        statusEl.textContent = `İşleniyor… (${i + 1}/${files.length})`;
+        const result = await processFile(files[i], i, files.length);
+        if (result) successCount++;
+      }
+      
+      log(`\n🎉 İşlem tamamlandı! ${successCount}/${files.length} dosya başarılı.`);
     }
+
+    runBtn.disabled = false;
+    statusEl.textContent = "";
   });
 </script>
