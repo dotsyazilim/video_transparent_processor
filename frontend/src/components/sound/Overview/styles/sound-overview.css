@@ -1,0 +1,47 @@
+.sound-overview {
+  display: grid;
+  gap: 48px;
+}
+
+.sound-overview__hero,
+.sound-overview__options,
+.sound-overview__formats {
+  display: grid;
+  gap: 16px;
+}
+
+.sound-overview__hero h1 {
+  margin: 0;
+  color: #181c38;
+  font-size: clamp(30px, 4vw, 42px);
+}
+
+.sound-overview__hero p,
+.sound-overview__options p {
+  margin: 0;
+  color: #5b6175;
+}
+
+.sound-overview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.sound-overview__grid article {
+  background: var(--card);
+  border: 1px solid rgba(96, 110, 188, 0.16);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.sound-overview__formats ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+  color: #4f567a;
+}

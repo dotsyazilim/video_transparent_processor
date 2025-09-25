@@ -1,0 +1,418 @@
+{
+  "language": {
+    "label": "语言",
+    "code": "zh",
+    "name": "中文"
+  },
+  "languages": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "hi": "हिन्दी",
+    "ru": "Русский",
+    "zh": "中文"
+  },
+  "header": {
+    "brand": "TransparaStream",
+    "navigation": "主导航",
+    "ads": {
+      "reserve": "预订此广告位",
+      "tag": "广告",
+      "infobar": "通过品牌广告位和白标嵌入提升投资回报。"
+    },
+    "actions": {
+      "searchAria": "搜索",
+      "login": "登录",
+      "signup": "注册"
+    },
+    "nav": [
+      {
+        "id": "convert",
+        "label": "转换",
+        "columns": [
+          {
+            "heading": "视频与音频",
+            "items": [
+              "视频转换器",
+              "音频转换器",
+              "字幕转换器"
+            ]
+          },
+          {
+            "heading": "图片",
+            "items": [
+              "图片转换器",
+              "PNG 转 WebP",
+              "SVG 转 PNG"
+            ]
+          },
+          {
+            "heading": "PDF 与文档",
+            "items": [
+              "PDF 转 Word",
+              "DOCX 转 PDF",
+              "电子书转换器"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compress",
+        "label": "压缩",
+        "columns": [
+          {
+            "heading": "视频与音频",
+            "items": [
+              "视频压缩",
+              "MP3 压缩",
+              "WAV 压缩"
+            ]
+          },
+          {
+            "heading": "图片",
+            "items": [
+              "图片压缩",
+              "JPEG 压缩",
+              "PNG 压缩"
+            ]
+          },
+          {
+            "heading": "GIF",
+            "items": [
+              "GIF 压缩",
+              "APNG 优化"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tools",
+        "label": "工具",
+        "columns": [
+          {
+            "heading": "背景",
+            "items": [
+              "移除背景",
+              "抠像滤镜",
+              "色彩校正"
+            ]
+          },
+          {
+            "heading": "剪辑",
+            "items": [
+              "裁剪与合并",
+              "添加字幕",
+              "移除水印"
+            ]
+          },
+          {
+            "heading": "发布",
+            "items": [
+              "链接分享",
+              "生成二维码",
+              "Webhook 提醒"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "api",
+        "label": "API",
+        "description": "以编程方式调优流程",
+        "href": "#api"
+      },
+      {
+        "id": "pricing",
+        "label": "定价",
+        "href": "/pricing"
+      },
+      {
+        "id": "video",
+        "label": "视频",
+        "href": "/video"
+      },
+      {
+        "id": "image",
+        "label": "图片",
+        "href": "/image"
+      },
+      {
+        "id": "sound",
+        "label": "音频",
+        "href": "/sound"
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "新一代透明压缩",
+    "title": "以工作室级别的 Alpha 通道交付轻量视频。",
+    "description": "拖放素材即可移除白色或抠像背景，平衡码率，并在数秒内输出可直接播放的资源。TransparaStream 优化 FFmpeg 流程，让您专注于讲述故事。",
+    "primaryAction": "上传文件",
+    "secondaryAction": "查看 API",
+    "status": "实时预览",
+    "cardTitle": "透明 Alpha 的 HQ WebP",
+    "metrics": [
+      {
+        "value": "99.95%",
+        "label": "处理可用率"
+      },
+      {
+        "value": "12×",
+        "label": "平均体积缩减"
+      },
+      {
+        "value": "<90 秒",
+        "label": "平均完成时间"
+      }
+    ],
+    "previews": {
+      "before": "前",
+      "after": "后",
+      "original": "原始素材",
+      "processed": "透明 WebP"
+    }
+  },
+  "upload": {
+    "title": "拖入文件或浏览选择",
+    "description": "支持 MP4、MOV、WebM、GIF，大小最高 1 GiB。背景移除预设将自动应用，可在上传后微调。",
+    "select": "选择文件",
+    "sample": "使用示例视频",
+    "note": "每天 3 次免费任务，无需注册。",
+    "sidebarTitle": "预设精选",
+    "sidebarCta": "查看完整预设库 →",
+    "presets": [
+      {
+        "name": "网页优化",
+        "description": "CRF 28 · 720p · Opus 单声道 · 缩小 12 倍"
+      },
+      {
+        "name": "超强压缩",
+        "description": "CRF 38 · 480p · 强力降噪与抠像"
+      },
+      {
+        "name": "GIF 转 WebP",
+        "description": "调色板抖动，保留循环，更轻量的精灵图"
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "创作者为何选择我们",
+    "title": "专为透明视频交付打造。",
+    "intro": "现代渲染、丰富可观测性以及适配各渠道的灵活输出。",
+    "learnMore": "了解更多",
+    "items": [
+      {
+        "title": "自适应 FFmpeg 流程",
+        "description": "我们依据素材直方图动态拼接抠像、降噪与 Alpha 合并滤镜。"
+      },
+      {
+        "title": "针对输出的智能调优",
+        "description": "为不同受众选择 WebM、H.264、AV1、WebP 或 GIF，并匹配合理的 CRF 与音频码率。"
+      },
+      {
+        "title": "审计就绪日志",
+        "description": "每个任务都附带详尽的 FFmpeg 日志与探针快照，方便合规团队审查。"
+      },
+      {
+        "title": "团队工作区",
+        "description": "邀请剪辑师，定义预设，并在发布前对比查看结果。"
+      }
+    ]
+  },
+  "apiPromo": {
+    "title": "将识别背景的压缩整合进工作流。",
+    "description": "我们的 REST API 完全复用界面预设，让您的产品、DAM 或自动化流程可大规模处理素材。排队任务、实时查看日志，并通过签名 Webhook 拉取完成的 WebP、WebM 或 MP4 包。",
+    "benefits": [
+      "使用多输出预设调用 POST /api/process",
+      "Webhook 指数退避重试",
+      "按密钥划分的使用分析与速率限制"
+    ],
+    "primaryAction": "查看 API 文档",
+    "secondaryAction": "生成沙箱密钥",
+    "codeSample": "curl -X POST https://api.transparastream.com/v1/process \\\n  -H \"Authorization: Bearer <token>\" \\\n  -F preset=web-optimized \\\n  -F outWebp=true -F outWebm=true \\\n  -F file=@studio-demo.mov -o result.zip"
+  },
+  "testimonials": {
+    "eyebrow": "深受创意团队信赖",
+    "title": "为剪辑师、产品团队与自动化而设计。",
+    "items": [
+      {
+        "quote": "我们每周向 16 个平台交付剧集内容。TransparaStream 让准备时间缩短 60%，Alpha 通道始终纯净。",
+        "author": "Lina Ozturk",
+        "role": "后期制作负责人，FrameLab Studio"
+      },
+      {
+        "quote": "透明 GIF 转 WebP 过去是支持难题。现在市场团队无需找工程师，只需拖放即可。",
+        "author": "Jon Ruiz",
+        "role": "增长负责人，SocialPulse"
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "简单套餐",
+    "title": "从独立创作者扩展到企业分发。",
+    "primaryCta": "开始免费试用",
+    "secondaryCta": "联系我们",
+    "plans": [
+      {
+        "name": "入门版",
+        "price": "0 $",
+        "cadence": "每月",
+        "features": [
+          "每日 3 个任务",
+          "网页优化预设",
+          "邮件支持"
+        ],
+        "highlighted": false,
+        "cta": "立即开始"
+      },
+      {
+        "name": "工作室",
+        "price": "39 $",
+        "cadence": "每月",
+        "features": [
+          "无限预设",
+          "批量处理",
+          "优先渲染队列",
+          "Webhook 通知"
+        ],
+        "highlighted": true,
+        "cta": "开启试用"
+      },
+      {
+        "name": "企业版",
+        "price": "洽谈",
+        "features": [
+          "专属区域",
+          "定制广告分成",
+          "签署 SLA",
+          "专属上线支持"
+        ],
+        "highlighted": false,
+        "cta": "联系销售"
+      }
+    ]
+  },
+  "pricingPage": {
+    "eyebrow": "定价",
+    "title": "选择适合您流程的方案",
+    "subtitle": "灵活层级覆盖快速试验与企业级交付。",
+    "featuresHeading": "方案均包含",
+    "features": [
+      "所有输出保持透明 Alpha",
+      "Webhook 状态的队列监控",
+      "可导出的使用分析",
+      "基于角色的权限与工作区邀请"
+    ],
+    "faqHeading": "常见问题",
+    "faqs": [
+      {
+        "question": "可以随时切换方案吗？",
+        "answer": "可以，升级或降级立即生效，并保留您的使用余额。"
+      },
+      {
+        "question": "是否提供批量折扣？",
+        "answer": "工作室与企业版在超额分钟后提供阶梯定价。"
+      },
+      {
+        "question": "有 API 沙箱环境吗？",
+        "answer": "所有方案都包含独立凭证和配额受控的沙箱环境。"
+      }
+    ],
+    "contactHeading": "需要定制部署？",
+    "contactDescription": "我们的解决方案团队可打造专属区域、混合渲染与定制 SLA。",
+    "contactCta": "联系销售"
+  },
+  "videoPage": {
+    "eyebrow": "视频压缩",
+    "title": "更智能的透明视频压缩",
+    "subtitle": "使用为 Alpha 敏感素材设计的预设逐帧优化。",
+    "primaryAction": "开始压缩",
+    "secondaryAction": "阅读工作流指南",
+    "workflowsHeading": "选择即用工作流",
+    "workflows": [
+      {
+        "title": "产品演示 WebM Alpha",
+        "description": "平衡的 CRF 与 VP9 调优保证叠加层在各浏览器中清晰锐利。"
+      },
+      {
+        "title": "直播下三分之一字幕",
+        "description": "生成适用于 OBS 与硬件切换台的透明 HEVC 片段。"
+      },
+      {
+        "title": "移动端宣传短片",
+        "description": "自动响度校准，极速输出 MP4。"
+      }
+    ],
+    "presetsHeading": "热门预设组合",
+    "presets": [
+      "Web 优化 1080p",
+      "社交故事 720p",
+      "AR Overlay Pro",
+      "Alpha GIF 清理"
+    ]
+  },
+  "imagePage": {
+    "eyebrow": "图片工具",
+    "title": "晶莹剔透的透明图片管线",
+    "subtitle": "优化精灵图、UI 导出与营销素材，保持 Alpha 不丢失。",
+    "workflowsHeading": "热门图片工作流",
+    "workflows": [
+      {
+        "title": "品牌资产导出",
+        "description": "批量将分层 PSD 转为 WebP，并保留透明度。"
+      },
+      {
+        "title": "图标精灵优化",
+        "description": "在保持像素比例的同时压缩图标精灵。"
+      },
+      {
+        "title": "商城包准备",
+        "description": "上线前规范色彩配置并裁剪留白。"
+      }
+    ],
+    "formatsHeading": "支持格式",
+    "formats": [
+      "PNG",
+      "WebP",
+      "AVIF",
+      "TIFF",
+      "SVG",
+      "ICO"
+    ]
+  },
+  "soundPage": {
+    "eyebrow": "音频工具",
+    "title": "顺滑的透明音频处理",
+    "subtitle": "清理配音、优化音乐底垫，并为各渠道平衡响度。",
+    "optionsHeading": "可以完成的任务",
+    "options": [
+      {
+        "title": "对白隔离",
+        "description": "去除房间噪声，同时保留自然人声，适合配音流程。"
+      },
+      {
+        "title": "空间混音",
+        "description": "将环绕声下混至立体声，确保移动设备也清晰。"
+      },
+      {
+        "title": "播客增强",
+        "description": "一次完成响度校准、均衡与动态处理。"
+      }
+    ],
+    "formatsHeading": "支持的音频格式",
+    "formats": [
+      "WAV",
+      "AIFF",
+      "FLAC",
+      "AAC",
+      "MP3",
+      "OGG"
+    ]
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "您访问的页面可能已移动或暂时不可用。",
+    "cta": "返回首页"
+  }
+}

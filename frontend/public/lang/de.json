@@ -1,0 +1,418 @@
+{
+  "language": {
+    "label": "Sprache",
+    "code": "de",
+    "name": "Deutsch"
+  },
+  "languages": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "hi": "हिन्दी",
+    "ru": "Русский",
+    "zh": "中文"
+  },
+  "header": {
+    "brand": "TransparaStream",
+    "navigation": "Hauptnavigation",
+    "ads": {
+      "reserve": "Diesen Banner buchen",
+      "tag": "Anzeige",
+      "infobar": "Steigern Sie den ROI mit gebrandeten Werbeflächen und White-Label-Einbindungen."
+    },
+    "actions": {
+      "searchAria": "Suchen",
+      "login": "Anmelden",
+      "signup": "Registrieren"
+    },
+    "nav": [
+      {
+        "id": "convert",
+        "label": "Konvertieren",
+        "columns": [
+          {
+            "heading": "Video & Audio",
+            "items": [
+              "Video-Konverter",
+              "Audio-Konverter",
+              "Untertitel-Konverter"
+            ]
+          },
+          {
+            "heading": "Bild",
+            "items": [
+              "Bild-Konverter",
+              "PNG zu WebP",
+              "SVG zu PNG"
+            ]
+          },
+          {
+            "heading": "PDF & Docs",
+            "items": [
+              "PDF zu Word",
+              "DOCX zu PDF",
+              "E-Book-Konverter"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compress",
+        "label": "Komprimieren",
+        "columns": [
+          {
+            "heading": "Video & Audio",
+            "items": [
+              "Video-Komprimierer",
+              "MP3-Komprimierer",
+              "WAV-Komprimierer"
+            ]
+          },
+          {
+            "heading": "Bild",
+            "items": [
+              "Bild-Komprimierer",
+              "JPEG-Komprimierer",
+              "PNG-Komprimierer"
+            ]
+          },
+          {
+            "heading": "GIF",
+            "items": [
+              "GIF-Komprimierer",
+              "APNG-Optimierer"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tools",
+        "label": "Werkzeuge",
+        "columns": [
+          {
+            "heading": "Hintergrund",
+            "items": [
+              "Hintergrund entfernen",
+              "Chroma-Key-Filter",
+              "Color-Grading"
+            ]
+          },
+          {
+            "heading": "Editing",
+            "items": [
+              "Trimmen & Zusammenfügen",
+              "Untertitel hinzufügen",
+              "Wasserzeichen entfernen"
+            ]
+          },
+          {
+            "heading": "Auslieferung",
+            "items": [
+              "Per Link teilen",
+              "QR-Code erzeugen",
+              "Webhook-Benachrichtigungen"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "api",
+        "label": "API",
+        "description": "Pipelines programmatisch steuern",
+        "href": "#api"
+      },
+      {
+        "id": "pricing",
+        "label": "Preise",
+        "href": "/pricing"
+      },
+      {
+        "id": "video",
+        "label": "Video",
+        "href": "/video"
+      },
+      {
+        "id": "image",
+        "label": "Bild",
+        "href": "/image"
+      },
+      {
+        "id": "sound",
+        "label": "Audio",
+        "href": "/sound"
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Next-Gen-Transparenz-Komprimierung",
+    "title": "Liefern Sie leichte Videos mit Studio-Alphakanälen.",
+    "description": "Ziehen Sie Medien per Drag-and-drop, entfernen Sie weiße oder Chroma-Hintergründe, balancieren Sie Bitraten und liefern Sie in Sekunden streamingfertige Assets. TransparaStream optimiert FFmpeg-Pipelines, damit Sie sich auf Storytelling konzentrieren können.",
+    "primaryAction": "Datei hochladen",
+    "secondaryAction": "API entdecken",
+    "status": "Live-Vorschau",
+    "cardTitle": "HQ-WebP mit transparentem Alpha",
+    "metrics": [
+      {
+        "value": "99,95%",
+        "label": "Verfügbare Verarbeitung"
+      },
+      {
+        "value": "12×",
+        "label": "Durchschnittliche Größenreduktion"
+      },
+      {
+        "value": "<90 s",
+        "label": "Mittlere Durchlaufzeit"
+      }
+    ],
+    "previews": {
+      "before": "Vorher",
+      "after": "Nachher",
+      "original": "Originalmaterial",
+      "processed": "Transparentes WebP"
+    }
+  },
+  "upload": {
+    "title": "Dateien hier ablegen oder durchsuchen",
+    "description": "Unterstützt MP4, MOV, WebM, GIF bis 1 GiB. Hintergrundentfernung wird automatisch angewendet und kann nach dem Upload feinjustiert werden.",
+    "select": "Dateien auswählen",
+    "sample": "Beispielclip nutzen",
+    "note": "Für 3 Jobs pro Tag ist keine Registrierung erforderlich.",
+    "sidebarTitle": "Preset-Spotlight",
+    "sidebarCta": "Komplette Preset-Bibliothek ansehen →",
+    "presets": [
+      {
+        "name": "Web Optimiert",
+        "description": "CRF 28 · 720p · Opus Mono · 12× kleiner"
+      },
+      {
+        "name": "Ultra Compress",
+        "description": "CRF 38 · 480p · Aggressive Rauschunterdrückung & Chroma-Key"
+      },
+      {
+        "name": "GIF zu WebP",
+        "description": "Palettendithering, Schleife erhalten, leichteres Sprite-Sheet"
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Warum Teams wechseln",
+    "title": "Perfekt für transparente Videoauslieferung.",
+    "intro": "Moderne Verarbeitung, tiefe Einblicke und flexible Ausgaben für jeden Kanal.",
+    "learnMore": "Mehr erfahren",
+    "items": [
+      {
+        "title": "Adaptive FFmpeg-Pipelines",
+        "description": "Wir kombinieren Chroma-Key, Rauschfilter und Alphamerge dynamisch basierend auf Ihrem Histogramm."
+      },
+      {
+        "title": "Intelligenz pro Ausgabe",
+        "description": "Wählen Sie WebM, H.264, AV1, WebP oder GIF mit abgestimmtem CRF und Audiobitraten für jedes Publikum."
+      },
+      {
+        "title": "Auditfähige Protokolle",
+        "description": "Jeder Job enthält ausführliche FFmpeg-Logs und Probe-Snapshots für Compliance-Teams."
+      },
+      {
+        "title": "Team-Workspaces",
+        "description": "Laden Sie Editoren ein, definieren Sie Presets und prüfen Sie Vergleiche vor der Veröffentlichung."
+      }
+    ]
+  },
+  "apiPromo": {
+    "title": "Integrieren Sie hintergrundbewusste Komprimierung in Ihren Workflow.",
+    "description": "Unsere REST-API spiegelt die UI-Presets wider, damit Produkt, DAM oder Automationen Material in großem Maßstab verarbeiten können. Stellen Sie Jobs in die Warteschlange, streamen Sie Logs und holen Sie fertige WebP-, WebM- oder MP4-Pakete per signierten Webhooks ab.",
+    "benefits": [
+      "POST /api/process mit Multi-Output-Presets",
+      "Webhook-Retries mit exponentiellem Backoff",
+      "Nutzungsanalysen und Ratenlimits pro Schlüssel"
+    ],
+    "primaryAction": "API-Referenz ansehen",
+    "secondaryAction": "Sandbox-Schlüssel generieren",
+    "codeSample": "curl -X POST https://api.transparastream.com/v1/process \\\n  -H \"Authorization: Bearer <token>\" \\\n  -F preset=web-optimized \\\n  -F outWebp=true -F outWebm=true \\\n  -F file=@studio-demo.mov -o result.zip"
+  },
+  "testimonials": {
+    "eyebrow": "Vertrauenswürdig bei Kreativteams",
+    "title": "Für Editoren, Produktteams und Automation entwickelt.",
+    "items": [
+      {
+        "quote": "Wir beliefern jede Woche sechzehn Plattformen mit Serieninhalten. TransparaStream verkürzte unsere Vorbereitung um 60 % und die Alphakanäle bleiben makellos.",
+        "author": "Lina Ozturk",
+        "role": "Leitung Postproduktion, FrameLab Studio"
+      },
+      {
+        "quote": "Transparente GIF-zu-WebP-Konvertierung war früher ein Support-Albtraum. Jetzt zieht das Marketing-Team Assets einfach per Drag-and-drop, ohne Engineering zu fragen.",
+        "author": "Jon Ruiz",
+        "role": "Growth Lead, SocialPulse"
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Einfache Pakete",
+    "title": "Skalierbar vom Solo-Creator bis zum Enterprise-Einsatz.",
+    "primaryCta": "Kostenlos testen",
+    "secondaryCta": "Kontakt aufnehmen",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "0 $",
+        "cadence": "pro Monat",
+        "features": [
+          "3 Jobs pro Tag",
+          "Web-optimiertes Preset",
+          "E-Mail-Support"
+        ],
+        "highlighted": false,
+        "cta": "Jetzt starten"
+      },
+      {
+        "name": "Studio",
+        "price": "39 $",
+        "cadence": "pro Monat",
+        "features": [
+          "Unbegrenzte Presets",
+          "Stapelverarbeitung",
+          "Priorisierte Render-Warteschlange",
+          "Webhook-Benachrichtigungen"
+        ],
+        "highlighted": true,
+        "cta": "Kostenlos testen"
+      },
+      {
+        "name": "Enterprise",
+        "price": "Lassen Sie uns sprechen",
+        "features": [
+          "Dedizierte Region",
+          "Individuelle Werbeerlös-Teilung",
+          "Signierte SLAs",
+          "Persönliches Onboarding"
+        ],
+        "highlighted": false,
+        "cta": "Mit Vertrieb sprechen"
+      }
+    ]
+  },
+  "pricingPage": {
+    "eyebrow": "Preise",
+    "title": "Wählen Sie den Plan, der zu Ihrem Workflow passt",
+    "subtitle": "Flexible Stufen unterstützen alles – von schnellen Tests bis zur Enterprise-Auslieferung.",
+    "featuresHeading": "In allen Plänen enthalten",
+    "features": [
+      "Transparente Alphakanäle in allen Outputs",
+      "Warteschlangen-Monitoring mit Webhook-Status",
+      "Nutzungsanalysen als exportierbare Berichte",
+      "Rollenbasierte Zugriffe und Workspace-Einladungen"
+    ],
+    "faqHeading": "Häufige Fragen",
+    "faqs": [
+      {
+        "question": "Kann ich meinen Plan jederzeit wechseln?",
+        "answer": "Ja, Upgrades und Downgrades greifen sofort und Ihr Nutzungskonto wird übernommen."
+      },
+      {
+        "question": "Gibt es Mengenrabatte?",
+        "answer": "Studio- und Enterprise-Pläne bieten gestaffelte Preise, sobald Sie die enthaltenen Minuten überschreiten."
+      },
+      {
+        "question": "Gibt es eine API-Sandbox?",
+        "answer": "Alle Pläne beinhalten eine Sandbox mit separaten Zugangsdaten und begrenzten Quoten."
+      }
+    ],
+    "contactHeading": "Brauchen Sie eine maßgeschneiderte Lösung?",
+    "contactDescription": "Unser Solutions-Team entwirft dedizierte Regionen, Hybrid-Rendering und maßgeschneiderte SLAs.",
+    "contactCta": "Mit Vertrieb sprechen"
+  },
+  "videoPage": {
+    "eyebrow": "Video-Komprimierung",
+    "title": "Intelligentere transparente Videokomprimierung",
+    "subtitle": "Optimieren Sie Bild für Bild mit Presets für alpha-sensitives Material.",
+    "primaryAction": "Komprimierung starten",
+    "secondaryAction": "Workflow-Leitfaden lesen",
+    "workflowsHeading": "Wählen Sie einen einsatzbereiten Workflow",
+    "workflows": [
+      {
+        "title": "WebM-Alpha für Produktdemos",
+        "description": "Ausgewogener CRF und VP9 sorgen für gestochen scharfe Overlays in allen Browsern."
+      },
+      {
+        "title": "Lower Thirds für Livestreams",
+        "description": "Erzeugen Sie transparente HEVC-Clips, bereit für OBS und Hardware-Switcher."
+      },
+      {
+        "title": "Mobile Promo-Reels",
+        "description": "Liefern Sie blitzschnelle MP4-Exporte mit automatischer Lautheitsanpassung."
+      }
+    ],
+    "presetsHeading": "Beliebte Preset-Bundles",
+    "presets": [
+      "Web Optimiert 1080p",
+      "Social Stories 720p",
+      "AR Overlay Pro",
+      "Alpha GIF Cleanup"
+    ]
+  },
+  "imagePage": {
+    "eyebrow": "Bild-Tools",
+    "title": "Kristallklare transparente Bild-Pipelines",
+    "subtitle": "Optimieren Sie Sprites, UI-Exports und Marketing-Assets ohne Alpha-Verlust.",
+    "workflowsHeading": "Beliebte Bild-Workflows",
+    "workflows": [
+      {
+        "title": "Brand-Asset-Export",
+        "description": "Konvertieren Sie PSDs stapelweise zu WebP und behalten Sie Transparenzen bei."
+      },
+      {
+        "title": "Icon-Sprite-Optimierung",
+        "description": "Komprimieren Sie Icon-Sheets und behalten Sie gestochen scharfe Pixelverhältnisse."
+      },
+      {
+        "title": "Marketplace-Paketvorbereitung",
+        "description": "Normalisieren Sie Farbprofile und schneiden Sie Leerraum vor der Veröffentlichung."
+      }
+    ],
+    "formatsHeading": "Unterstützte Formate",
+    "formats": [
+      "PNG",
+      "WebP",
+      "AVIF",
+      "TIFF",
+      "SVG",
+      "ICO"
+    ]
+  },
+  "soundPage": {
+    "eyebrow": "Audio-Tools",
+    "title": "Nahtlose transparente Audioverarbeitung",
+    "subtitle": "Bereinigen Sie Voice-overs, optimieren Sie Musikbetten und balancieren Sie die Lautheit für jeden Kanal.",
+    "optionsHeading": "Was möglich ist",
+    "options": [
+      {
+        "title": "Dialog isolieren",
+        "description": "Entfernen Sie Raumrauschen und behalten Sie natürlichen Stimmklang für Synchronisationen."
+      },
+      {
+        "title": "Räumliche Downmixes",
+        "description": "Mischen Sie Surround-Stems zu Stereo und bewahren Sie Klarheit auf mobilen Geräten."
+      },
+      {
+        "title": "Podcast-Optimierer",
+        "description": "Wenden Sie Lautheitsanpassung, EQ und Dynamikbearbeitung in einem Durchgang an."
+      }
+    ],
+    "formatsHeading": "Unterstützte Audioformate",
+    "formats": [
+      "WAV",
+      "AIFF",
+      "FLAC",
+      "AAC",
+      "MP3",
+      "OGG"
+    ]
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite wurde verschoben oder ist vorübergehend nicht erreichbar.",
+    "cta": "Zur Startseite"
+  }
+}

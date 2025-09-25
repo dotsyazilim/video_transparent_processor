@@ -1,0 +1,63 @@
+.pricing-page {
+  display: grid;
+  gap: 64px;
+}
+
+.pricing-page__intro {
+  display: grid;
+  gap: 12px;
+  max-width: 600px;
+}
+
+.pricing-page__intro h1 {
+  margin: 0;
+  color: #171b36;
+}
+
+.pricing-page__intro p {
+  margin: 0;
+  color: #5b6175;
+}
+
+.pricing-page__features,
+.pricing-page__faq,
+.pricing-page__contact {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(104, 114, 187, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: grid;
+  gap: 20px;
+}
+
+.pricing-page__features ul,
+.pricing-page__faq-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  color: #4f567a;
+}
+
+.pricing-page__faq-list details {
+  border: 1px solid rgba(96, 110, 188, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  background: #ffffff;
+}
+
+.pricing-page__faq-list summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #1f244b;
+}
+
+.pricing-page__contact {
+  text-align: center;
+}
+
+.pricing-page__contact p {
+  margin: 0;
+  color: #5b6175;
+}
