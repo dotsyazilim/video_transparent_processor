@@ -1,18 +1,19 @@
-# Video Transparent Processor
+# Görsel & Video Sıkıştırma Sunucusu
 
-Basit HTTP servisi: beyaz arka planlı videoları ve GIF'leri işler, arka planı şeffaf yapar ve yüksek oranda sıkıştırır.
+Bu depo, görsel ve video dosyalarını kaliteyi koruyarak küçültüp güvenle depolamak için tasarlanmış Go tabanlı HTTP servisinin ve React/Vite arayüzünün kaynak kodlarını içerir. Sunucu FFmpeg kullanarak iş yüklerini kuyruğa alır, `/api/process` uç noktası üzerinden gelen dosyaları sıkıştırır ve opsiyonel olarak arşivler.
 
-## Özellikler
+## Öne Çıkanlar
 
-- Video (MP4 vb.) → Şeffaf Animated WebP çıktısı
-- GIF → Optimize Animated WebP ve opsiyonel sıkıştırılmış GIF
-- Gelişmiş filtre zinciri: hqdn3d, gradfun, unsharp, colorkey/luma + alphamerge
-- Tek çıktı ise tarayıcıda inline, çoklu ise ZIP
+- Görsel ve video odaklı sıkıştırma presetleri (WebM, MP4, WebP, AVIF)
+- Dosya başına boyut, kalite, fps gibi parametreleri yapılandırılabilir API
+- Çok bölgeli depolama kancaları ve webhook entegrasyonları
+- React tabanlı kontrol paneli: yükleme, fiyatlandırma, dil seçimi ve tema değişimi
+- CLI veya UI üzerinden gözlemlenebilirlik: `/api/probe` ile FFmpeg encoder listesini raporlayın
 
 ## Gereksinimler
 
 - Go 1.20+
-- FFmpeg (libwebp zorunlu; libopus/libx264 opsiyonel)
+- FFmpeg (libwebp, libvpx, libx265 önerilir)
 
 macOS (Homebrew):
 
@@ -26,75 +27,75 @@ Ubuntu/Debian:
 sudo apt update && sudo apt install -y ffmpeg golang
 ```
 
-## Çalıştırma
+## Geliştirme
+
+Sunucuyu ve istemciyi hızlıca ayağa kaldırmak için:
 
 ```bash
+# Arka uç
 go run main.go
-# Varsayılan: http://localhost:8080
+# http://localhost:8080 üzerinde API ve statik dosyalar
+
+# Ön uç
+npm install
+npm run dev
+# http://localhost:5173 üzerinde Vite geliştirici sunucusu
 ```
 
-Sağlık kontrolü:
+Prod benzeri derleme:
 
 ```bash
-curl http://localhost:8080/health
-```
-
-## Web Arayüzü
-
-- `index.html` kökten sunulur.
-- Dosyayı seç, ayarları yap, İşle’ye bas.
-
-Önerilen başlangıç ayarları (beyaz arka plan videolar için):
-
-- Alpha similarity: 0.12
-- Blend: 0.03
-- Beyaz eşiği: 0.95
-- Çıktı: Sadece Animated WebP (şeffaf)
-
-## API
-
-`POST /api/process` (multipart/form-data)
-
-Form alanları:
-
-- `file`: giriş video/gif
-- `height` (int, def 720)
-- `fps` (int, def 24)
-- `similarity` (float, def 0.12)
-- `blend` (float, def 0.03)
-- `whiteThreshold` (float, def 0.95)
-- `lumaFallback` (bool, def true)
-- `outWebp` (bool, def true)
-- `outAv1` (bool, def false)
-- `outH264` (bool, def false)
-
-Dönüşler:
-
-- Tek dosya: `image/webp` inline (veya seçilen format)
-- Çoklu dosya: `application/zip`
-- Hata: 400 text
-
-Örnek çağrı:
-
-```bash
-curl -X POST http://localhost:8080/api/process \
-  -F height=720 -F fps=24 -F similarity=0.12 -F blend=0.03 -F whiteThreshold=0.95 \
-  -F lumaFallback=true -F outWebp=true -F outAv1=false -F outH264=false \
-  -F file=@input.mp4 -o out.webp
-```
-
-## Dağıtım
-
-- İkili derleme:
-
-```bash
+npm run build   # Vite build -> dist/
 go build -o videoprocessor
 ./videoprocessor
 ```
 
-- Reverse proxy (nginx/caddy) arkasında 8080 portunu yönlendirin.
+## API Kısa Rehberi
 
-## Notlar
+Sıkıştırma isteği örneği:
 
-- MP4 formatı alfa/şeffaflığı desteklemez; şeffaf çıktı için WebP/WebM kullanılır.
-- Çok parlak ama tam beyaz olmayan arka planlarda `similarity`, `blend` ve `whiteThreshold` değerlerini düşürüp/ artırarak deneyin.
+```bash
+curl -X POST http://localhost:8080/api/process \
+  -F file=@input.mp4 \
+  -F height=1080 \
+  -F fps=30 \
+  -F outWebp=true \
+  -F outAv1=false \
+  -o output.webp
+```
+
+Başarılı yanıt tek dosyaysa direkt çıktı (örn. `image/webp`), birden çok format istendiğinde otomatik olarak ZIP oluşturulur. Toplam yük boyutu varsayılan olarak 1 GiB ile sınırlandırılmıştır (`handleProcess`).
+
+## Proje Yapısı
+
+```
+├── main.go                     # Go HTTP sunucusu ve FFmpeg orkestrasyonu
+├── index.html                  # Statik yükleme arayüzü (sunucu kökü)
+├── src/                        # React + TypeScript istemci
+│   ├── components/             # Ana bileşenler (Header, Hero, Pricing, vb.)
+│   ├── controllers/            # Arayüz kontrol yardımcıları (tema, nav filtreleri)
+│   ├── i18n/                   # Dil sağlayıcısı ve JSON dosyaları
+│   └── pages/                  # Sayfa bazlı bileşenler (home, video, image...)
+└── public/lang/*.json          # Çeviri sözlükleri
+```
+
+## Test
+
+Go tarafı için:
+
+```bash
+go test ./... -cover
+```
+
+Ön yüz için istenirse `vitest` ekleyerek bileşen testleri oluşturabilirsiniz.
+
+## Kullanım İpuçları
+
+- `/api/probe` ile FFmpeg kurulumu ve encoder bilgilerini doğrulayın.
+- Büyük iş yüklerinde `TMPDIR` (veya Windows için `%TEMP%`) alanının yeterli olduğundan emin olun.
+- Varsayılan presetleri genişletirken FFmpeg argümanlarını satır içi yorumlarla belgeleyin.
+- Tema geçişi (`Light/Dark`) ve dil seçimi istemci tarafında yerleşik; yeni statik sayfalar eklerken bu bileşenleri yeniden kullanın.
+
+## Lisans
+
+Bu depo içeriği MIT lisansı altındadır. Ayrıntılar için `LICENSE` dosyasına bakın.

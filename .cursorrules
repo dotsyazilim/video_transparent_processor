@@ -1,0 +1,140 @@
+# Video Transparent Processor - Proje Geliştirme Kuralları
+
+Bu doküman, video/görsel/doküman sıkıştırma platformu geliştirme süreçlerinde uyulması gereken standartları ve kuralları belirtir.
+
+## 1. Proje Mimarisi ve Dosya Yapısı
+
+- **Mimari:** Proje, **MVC (Model-View-Controller)** prensiplerine uygun olarak geliştirilecektir. Bu, iş mantığı (Model), kullanıcı arayüzü (View) ve kullanıcı girdilerini işleyen (Controller) kısımlarının birbirinden ayrılmasını sağlar.
+- **Klasör Yapısı:**
+    - `src/pages`: Uygulamanın ana sayfaları bu klasör altında tutulacaktır.
+        - *Örnek:* `src/pages/home_page.tsx`, `src/pages/image_page.tsx`
+    - `src/components`: Tekrar kullanılabilir UI bileşenleri bu klasör altında yer alacaktır.
+        - *Örnek:* `src/components/home/hero_section.tsx`, `src/components/shared/header.tsx`
+    - `src/controllers`: İş mantığı ve veri filtreleme fonksiyonları bu klasörde bulunacaktır.
+        - *Örnek:* `src/controllers/home.ts`
+    - `src/models`: Uygulama veri yapılarını tanımlayan modeller (interface, class vb.) bu klasörde yer alacaktır.
+        - *Örnek:* `src/models/home.ts`
+    - `src/i18n`: Çoklu dil desteği ve çeviri yönetimi bu klasörde bulunacaktır.
+        - *Örnek:* `src/i18n/LanguageProvider.tsx`
+    - `src/styles`: Tüm CSS dosyaları bu klasör altında organize edilecektir.
+        - *Örnek:* `src/styles/components/home/hero.css`
+
+## 2. Adlandırma Standartları
+
+- **Anlaşılırlık:** Tüm dosya, klasör, değişken ve fonksiyon adları, ne işe yaradığını açıkça belirtecek şekilde ve `camelCase` formatında olmalıdır.
+- **Dosya Adlandırma:**
+    - **Sayfalar:** Sayfa dosyaları `pages` klasörü içinde, sayfa adını yansıtacak şekilde ve `_page.tsx` sonekiyle adlandırılır.
+        - *Örnek:* `src/pages/home_page.tsx`
+        - *Örnek:* `src/pages/image_page.tsx`
+    - **Bileşenler (Components):** Bileşen dosyaları `components` klasörü içinde, bileşen adını yansıtacak şekilde ve `component.tsx` sonekiyle adlandırılır.
+        - *Örnek:* `src/components/home/hero_section.tsx`
+        - *Örnek:* `src/components/shared/header.tsx`
+    - **Controller'lar:** İş mantığı dosyaları `controllers` klasörü içinde, `_controller.ts` sonekiyle adlandırılır.
+        - *Örnek:* `src/controllers/home_controller.ts`
+    - **Modeller:** Veri yapısı dosyaları `models` klasörü içinde, `_model.ts` sonekiyle adlandırılır.
+        - *Örnek:* `src/models/home_model.ts`
+    - **Servisler:** API ve iş mantığı dosyaları `services` klasörü içinde, `_service.ts` sonekiyle adlandırılır.
+        - *Örnek:* `src/services/api_service.ts`
+
+## 3. CSS Organizasyon Kuralları
+
+- **CSS Dosya Yapısı:** Tüm CSS dosyaları `src/styles` klasörü altında organize edilecektir.
+- **Sayfa CSS Dosyaları:** Her sayfa için `src/styles/pages` klasörü altında kendi CSS dosyası bulunacaktır.
+    - **Dosya Adlandırma:** Sayfa adı + `-page.css` formatında olacaktır.
+    - *Örnekler:*
+        - `src/styles/pages/home-page.css`
+        - `src/styles/pages/image-page.css`
+        - `src/styles/pages/video-page.css`
+- **Component CSS Dosyaları:** Her component için `src/styles/components` klasörü altında kendi CSS dosyası bulunacaktır.
+    - **Dosya Adlandırma:** Component klasörü adı + `.css` formatında olacaktır.
+    - *Örnekler:*
+        - `src/styles/components/home/hero/hero.css`
+        - `src/styles/components/shared/header/header.css`
+        - `src/styles/components/home/usageMetrics/usage-metrics.css`
+- **CSS İçerik Kısıtlaması:** Hiçbir sayfa içeriği veya component kendi içerisinde CSS içeriği tutamaz. Tüm stiller ilgili CSS dosyalarında bulunmalıdır.
+- **CSS Değişkenleri:** Tema renkleri ve genel stiller için CSS değişkenleri kullanılmalıdır.
+- **Responsive Design:** Tüm bileşenler mobil uyumlu olmalıdır ve CSS media query'ler kullanılmalıdır.
+
+## 4. Dil ve Çoklu Dil Desteği Kuralları
+
+- **Dil Dosyası Yapısı:** Tüm dil dosyaları `public/lang` klasörü altında organize edilecektir.
+- **String İçerik Kısıtlaması:** Dil değişse bile sabit değişmeyen yazılar hariç hiçbir String içeriği sabit olarak verilemez.
+- **Dil Dosyası Kullanımı:** Tüm metin içerikleri `public/lang` klasöründeki dil dosyalarından alınacaktır.
+- **Dil Dosyası Adlandırma:** Dil dosyaları dil koduna göre adlandırılacaktır.
+    - *Örnekler:*
+        - `public/lang/tr.json` (Türkçe)
+        - `public/lang/en.json` (İngilizce)
+        - `public/lang/de.json` (Almanca)
+        - `public/lang/ar.json` (Arapça)
+        - `public/lang/hi.json` (Hintçe)
+        - `public/lang/ru.json` (Rusça)
+        - `public/lang/zh.json` (Çince)
+- **LanguageProvider:** Tüm çeviriler `src/i18n/LanguageProvider.tsx` üzerinden yönetilmelidir.
+- **localStorage:** Dil seçimi localStorage'da saklanmalı ve sayfa geçişlerinde korunmalıdır.
+
+## 5. Sayfa Layout ve Responsive Tasarım Kuralları
+
+- **Genişlik Sınırlaması:** Sayfa genişlikleri için `max-width` sınırlaması kullanılmayacaktır. Sayfalar cihazın tam genişliğini kullanacak şekilde tasarlanmalıdır.
+- **Sayfa Ortalama:** Aşağıdaki sayfalar cihaz boyutu ne kadar genişlerse genişlesin daimi olarak ortalı tutulacaktır:
+    - `home_page.tsx`
+    - `image_page.tsx`
+    - `video_page.tsx`
+    - `sound_page.tsx`
+    - `contact_page.tsx`
+    - `about_page.tsx`
+    - `services_page.tsx`
+- **CSS Kuralları:**
+    - Sayfa container'larına `margin: 0 auto` uygulanmalıdır
+    - İçerikler `text-align: center` ile ortalanmalıdır
+    - Flexbox kullanılarak `justify-content: center` ve `align-items: center` uygulanmalıdır
+    - Sayfa yapısı hiçbir cihaz boyutunda bozulmamalıdır
+- **Responsive Breakpoint'ler:**
+    - Mobil: `max-width: 768px`
+    - Tablet: `max-width: 1024px`
+    - Desktop: `min-width: 1025px`
+
+## 6. Kodlama Prensipleri
+
+- **Sadelik (KISS):** Kodlar her zaman mümkün olan en basit ve en anlaşılır şekilde yazılmalıdır. Gereksiz karmaşıklıktan kaçınılmalıdır.
+- **Tek Sorumluluk Prensibi:** Her bileşen veya fonksiyonun tek bir görevi olmalıdır.
+- **UI ve İş Mantığının Ayrılması:**
+    - Arayüz bileşenleri (`.tsx` dosyaları) içerisinde doğrudan API çağrısı veya karmaşık iş mantığı bulunmamalıdır.
+    - Tüm veri işlemleri, API istekleri ve iş mantığı `src/controllers` klasöründeki controller'lar aracılığıyla yapılmalı ve bileşenler bu controller'ları çağırmalıdır.
+- **TypeScript Kullanımı:** Tüm kodlar TypeScript ile yazılmalı ve type safety sağlanmalıdır.
+- **React Hooks:** Modern React hooks (useState, useEffect, useMemo, useCallback) kullanılmalıdır.
+- **Component Props:** Tüm component props'ları interface ile tanımlanmalıdır.
+
+## 7. Genel Kurallar
+
+- **Kod Tekrarından Kaçınma (DRY):** Tekrar eden kod blokları, yeniden kullanılabilir fonksiyonlar veya bileşenler haline getirilmelidir.
+- **TypeScript Types:** Inline types kullanılmamalı, `src/models` klasöründeki interface'ler kullanılmalıdır.
+- **Error Handling:** Tüm async operations için proper error handling yapılmalıdır.
+- **Loading States:** Uzun süren işlemler için loading states gösterilmelidir.
+- **Animations:** Animasyonlar CSS ile yapılmalı, JavaScript ile animasyon kontrolü yapılmamalıdır.
+
+## 8. Build ve Test Kuralları
+
+- **Build Kontrolü:** Her kod değişikliğinden sonra `npm run build` komutu çalıştırılmalı ve build hatası olmamalıdır.
+- **TypeScript Kontrolü:** `npm run build` komutu TypeScript compilation errors'ını kontrol eder.
+- **CSS Validation:** Tüm CSS dosyaları geçerli CSS syntax'ına sahip olmalıdır.
+- **Responsive Test:** Tüm bileşenler farklı ekran boyutlarında test edilmelidir.
+- **Browser Compatibility:** Modern tarayıcılar (Chrome, Firefox, Safari, Edge) desteği sağlanmalıdır.
+
+## 9. Go Backend Kuralları
+
+- **Main File:** Backend `main.go` dosyasında olmalıdır.
+- **HTTP Server:** `go run main.go` komutu ile server başlatılmalıdır.
+- **FFmpeg Integration:** Video/görsel işleme FFmpeg kütüphanesi kullanılmalıdır.
+- **API Endpoints:** RESTful API design prensipleri kullanılmalıdır.
+- **Error Handling:** Go backend'te proper error handling yapılmalıdır.
+- **CORS Policy:** Frontend ile backend arasında CORS ayarları yapılmalıdır.
+
+## 10. Terminal ve Geliştirme Kuralları
+
+- **Development Server:** `npm run dev` komutu ile development server başlatılmalıdır.
+- **Go Server:** `go run main.go` komutu ile Go backend server başlatılmalıdır.
+- **Build Command:** `npm run build` komutu production build için kullanılmalıdır.
+- **Type Checking:** `npm run build` komutu TypeScript type checking yapar.
+- **Code Quality:** Tüm kod değişiklikleri linting kurallarına uygun olmalıdır.
+- **Build Validation:** Her önemli değişiklikten sonra build kontrolü yapılmalıdır.
+

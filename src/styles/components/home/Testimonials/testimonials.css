@@ -1,0 +1,42 @@
+.testimonials {
+  display: grid;
+  gap: 32px;
+}
+
+.section-heading {
+  display: grid;
+  gap: 8px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--heading-color);
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted-text-color);
+}
+
+.testimonial-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.testimonial-list blockquote {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 26px;
+  display: grid;
+  gap: 16px;
+  color: var(--text);
+}
+
+.testimonial-list footer {
+  display: grid;
+  gap: 4px;
+  color: var(--muted-text-color);
+}

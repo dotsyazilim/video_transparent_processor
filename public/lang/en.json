@@ -1,0 +1,467 @@
+{
+  "language": {
+    "label": "Language",
+    "code": "en",
+    "name": "English"
+  },
+  "languages": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "hi": "हिन्दी",
+    "ru": "Русский",
+    "zh": "中文"
+  },
+  "header": {
+    "brand": "TransparaStream",
+    "navigation": "Primary navigation",
+    "ads": {
+      "reserve": "Reserve this banner",
+      "tag": "Ad",
+      "infobar": "Boost ROI with branded ad slots & white-label embeds."
+    },
+    "actions": {
+      "searchAria": "Search",
+      "login": "Log In",
+      "signup": "Sign Up"
+    },
+    "nav": [
+      {
+        "id": "convert",
+        "label": "Convert",
+        "columns": [
+          {
+            "heading": "Video & Audio",
+            "items": [
+              "Video Converter",
+              "Audio Converter",
+              "Subtitle Converter"
+            ]
+          },
+          {
+            "heading": "Image",
+            "items": [
+              "Image Converter",
+              "PNG to WebP",
+              "SVG to PNG"
+            ]
+          },
+          {
+            "heading": "PDF & Docs",
+            "items": [
+              "PDF to Word",
+              "DOCX to PDF",
+              "eBook Converter"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compress",
+        "label": "Compress",
+        "columns": [
+          {
+            "heading": "Video & Audio",
+            "items": [
+              "Video Compressor",
+              "MP3 Compressor",
+              "WAV Compressor"
+            ]
+          },
+          {
+            "heading": "Image",
+            "items": [
+              "Image Compressor",
+              "JPEG Compressor",
+              "PNG Compressor"
+            ]
+          },
+          {
+            "heading": "GIF",
+            "items": [
+              "GIF Compressor",
+              "APNG Optimizer"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tools",
+        "label": "Tools",
+        "columns": [
+          {
+            "heading": "Background",
+            "items": [
+              "Remove Background",
+              "Chroma Key Filter",
+              "Color Grade"
+            ]
+          },
+          {
+            "heading": "Editing",
+            "items": [
+              "Trim & Merge",
+              "Add Captions",
+              "Watermark Remover"
+            ]
+          },
+          {
+            "heading": "Delivery",
+            "items": [
+              "Share via Link",
+              "Generate QR Code",
+              "Webhook Alerts"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "api",
+        "label": "API",
+        "description": "Tune pipelines programmatically",
+        "href": "#api"
+      },
+      {
+        "id": "pricing",
+        "label": "Pricing",
+        "href": "/pricing"
+      },
+      {
+        "id": "video",
+        "label": "Video",
+        "href": "/video"
+      },
+      {
+        "id": "image",
+        "label": "Image",
+        "href": "/image"
+      },
+      {
+        "id": "sound",
+        "label": "Audio",
+        "href": "/sound"
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Image & video optimisation",
+    "title": "Shrink image and video libraries without losing quality, store them safely, stream instantly.",
+    "description": "Whether you manage millions of images or heavy video archives, keep quality high while lowering delivery costs. Automate compression, storage tiers, and delivery workflows with one platform.",
+    "primaryAction": "Upload a file",
+    "secondaryAction": "Explore the API",
+    "status": "Usage snapshot",
+    "cardTitle": "Compression & storage savings",
+    "metrics": [
+      {
+        "value": "90%",
+        "label": "Average size reduction"
+      },
+      {
+        "value": "1,000",
+        "label": "Free monthly API requests"
+      },
+      {
+        "value": "50 MB",
+        "label": "Starter storage included"
+      }
+    ],
+  "previews": {
+    "before": "Image workload",
+    "after": "Optimised output",
+    "original": "246 MB ProRes 4444",
+    "processed": "28 MB WebM + archive"
+  },
+  "usageMetrics": {
+    "eyebrow": "Platform Statistics",
+    "title": "Real-time platform statistics"
+  },
+  "cards": {
+    "image": "Image compression",
+    "imageDetail": "PNG → WebP, colour profile preserved",
+    "video": "Video compression",
+    "videoDetail": "VP9 + H.265, synchronised storage"
+  }
+},
+  "upload": {
+    "title": "Drop files here or browse",
+    "description": "Supports MP4, MOV, WebM, GIF up to 1 GiB. Unlimited web compression covers up to 5 MB images and up to 100 MB videos—larger jobs route to the metered queue automatically.",
+    "select": "Select files",
+    "sample": "Use sample clip",
+    "note": "No card required. Track API and storage usage under Billing when you are ready to scale.",
+    "sidebarTitle": "Preset spotlight",
+    "sidebarCta": "See full preset library →",
+    "presets": [
+      {
+        "name": "Web Streamer",
+        "description": "CRF 26 · 1080p · VP9 alpha · CDN push ready"
+      },
+      {
+        "name": "Batch Thumbnails",
+        "description": "Up to 5 MB WebP conversion · Auto color profile · Instant caching"
+      },
+      {
+        "name": "Archive Master",
+        "description": "Store original, emit MP4, WebM, GIF variants automatically"
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Platform Features",
+    "title": "Professional media processing solutions",
+    "intro": "Optimize your entire media workflow with video, image, document, and API-focused features.",
+    "learnMore": "Learn More"
+  },
+  "apiPromo": {
+    "title": "Run compression and storage from a single API",
+    "description": "Kick off jobs in the browser, scale with the API. Orchestrate compression, storage policies, and delivery with one JSON payload.",
+    "benefits": [
+      "1,000 monthly requests included per key",
+      "Single payload controls compression, storage, and delivery",
+      "Webhook, S3, and CDN callbacks with signed URLs"
+    ],
+    "primaryAction": "Open API reference",
+    "secondaryAction": "Provision sandbox key",
+    "codeSample": "curl -X POST https://api.transparastream.com/v1/compress \\\n  -H \"Authorization: Bearer <token>\" \\\n  -d '{\\\"preset\\\":\\\"web-stream\\\",\\\"storeMaster\\\":true,\\\"callbacks\\\":[\\\"s3\\\"]}'"
+  },
+  "testimonials": {
+    "eyebrow": "Ops & media teams that compress at scale",
+    "title": "Built for product, video, and platform teams shipping millions of assets.",
+    "items": [
+      {
+        "quote": "We push 40 TB of product video every month. Starter keeps marketing fully self-serve while Studio absorbs our API bursts without surprise invoices.",
+        "author": "Maya Chen",
+        "role": "Director of Media Ops, Lumin Ledger"
+      },
+      {
+        "quote": "Storage tiers let us archive every master while shipping lean WebP and WebM versions automatically. Finance finally gets predictable, auditable billing exports.",
+        "author": "Ege Demir",
+        "role": "Platform PM, HoloCart"
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Flexible usage-based plans",
+    "title": "From unlimited web compression to turnkey infrastructure.",
+    "primaryCta": "Start compressing",
+    "secondaryCta": "Talk to sales",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "$0",
+        "cadence": "per month",
+        "features": [
+          "Unlimited web compression for up to 5 MB images and up to 100 MB videos",
+          "1,000 API requests included; $1 per additional 10k",
+          "50 MB managed storage included; $0.10/GB thereafter",
+          "Shared compute queue and email support"
+        ],
+        "highlighted": false,
+        "cta": "Start compressing"
+      },
+      {
+        "name": "Studio",
+        "price": "$4.99",
+        "cadence": "per month",
+        "features": [
+          "Unlimited web compression for up to 50 MB images and up to 1 GB videos",
+          "10k API requests per day included; $1 per additional 20k",
+          "1 GB managed storage included; $0.10/GB thereafter",
+          "Usage dashboards, billing exports, priority queue"
+        ],
+        "highlighted": true,
+        "cta": "Start Studio trial"
+      },
+      {
+        "name": "Enterprise",
+        "price": "$4.99+",
+        "cadence": "per node",
+        "features": [
+          "Dedicated 2 vCPU / 2 GB RAM nodes with 25 GB storage included",
+          "Scale CPU, RAM, and storage in $0.99 increments",
+          "Estimated 50k requests per day capacity per base node",
+          "Private networking, custom SLAs, white-glove onboarding"
+        ],
+        "highlighted": false,
+        "cta": "Configure nodes"
+      }
+    ]
+  },
+  "pricingPage": {
+    "eyebrow": "Pricing",
+    "title": "Choose compression, API, and infrastructure that scale with you",
+    "subtitle": "Start with unlimited web compression, then layer in API calls, managed storage, or dedicated servers as your workloads grow.",
+    "featuresHeading": "Everything plans include",
+    "features": [
+      "Geo-redundant storage replication with lifecycle rules",
+      "Preset library for WebM, MP4, WebP, AVIF, and GIF outputs",
+      "Real-time usage dashboards with exportable billing data",
+      "Role-based access control, audit logs, and webhook retries"
+    ],
+    "faqHeading": "Frequently asked questions",
+    "faqs": [
+      {
+        "question": "How does unlimited web compression work?",
+        "answer": "Starter and Studio plans let you compress from the browser without limits as long as files stay under the included web thresholds. Larger uploads automatically move to the metered queue so you never lose work."
+      },
+      {
+        "question": "What happens after the included API requests?",
+        "answer": "We meter in predictable blocks—$1 per additional 10k requests on Starter and $1 per 20k on Studio. Usage is visible in real time and billed at the end of the month."
+      },
+      {
+        "question": "Can I use your storage with my own CDN?",
+        "answer": "Yes. You can keep assets in our managed storage, export to S3-compatible buckets, or push to your CDN after processing."
+      }
+    ],
+    "contactHeading": "Need a custom deployment?",
+    "contactDescription": "Our solutions team can design dedicated regions, hybrid rendering, and tailored SLAs.",
+    "contactCta": "Talk to sales",
+    "calculator": {
+      "eyebrow": "Cost estimator",
+      "title": "Drag the sliders to model your monthly bill.",
+      "subtitle": "Switch plans and drag the handles to reflect the API, storage, and infrastructure you need.",
+      "planToggleAria": "Select a pricing plan",
+      "plan": {
+        "starter": "Starter",
+        "starterDescription": "Unlimited web compression for up to 5 MB images and up to 100 MB videos. Pay as you go for API calls and storage.",
+        "studio": "Studio",
+        "studioDescription": "Everything in Starter plus bigger web limits, 10k API requests per day, and 1 GB managed storage.",
+        "enterprise": "Enterprise",
+        "enterpriseDescription": "Rent dedicated nodes. Start with 2 vCPU / 2 GB RAM and 25 GB storage, then drag to scale resources."
+      },
+      "apiLabelStarter": "Monthly API requests",
+      "apiLabelStudio": "Monthly API requests",
+      "apiIncluded": "{{included}} free, then billed per additional block.",
+      "requests": "requests",
+      "storageLabel": "Storage (GB)",
+      "storageLabelEnterprise": "Reserved storage (GB)",
+      "storageStarterHelper": "First 0.05 GB (50 MB) included.",
+      "storageStudioHelper": "First 1 GB included.",
+      "storageEnterpriseHelper": "First 25 GB included. Drag to add more reserved storage.",
+      "unitGb": "GB",
+      "unitCpu": "vCPU",
+      "cpuLabel": "vCPU count",
+      "cpuHelper": "Base node includes 2 vCPU. Each extra vCPU is $0.99.",
+      "ramLabel": "RAM (GB)",
+      "ramHelper": "Base node includes 2 GB RAM. Each extra GB is $0.99.",
+      "totalLabel": "Estimated monthly total",
+      "breakdown": {
+        "baseStarter": "Starter base plan",
+        "baseStarterDetail": "Unlimited web compression for up to 5 MB images and up to 100 MB videos.",
+        "apiStarter": "API usage (1,000 requests included)",
+        "apiStarterDetail": "$1 per additional 10k requests.",
+        "storageStarter": "Storage (first 50 MB included)",
+        "storageDetail": "$0.10 per additional GB.",
+        "baseStudio": "Studio subscription",
+        "baseStudioDetail": "Includes bigger web uploads (up to 50 MB images, up to 1 GB videos) and 10k API requests per day.",
+        "apiStudio": "API usage beyond the included 10k/day",
+        "apiStudioDetail": "$1 per additional 20k requests.",
+        "storageStudio": "Storage (first 1 GB included)",
+        "baseEnterprise": "Enterprise base node",
+        "baseEnterpriseDetail": "Dedicated 2 vCPU / 2 GB RAM node with 25 GB storage. Estimated 50k requests per day.",
+        "cpuEnterprise": "Additional vCPU",
+        "cpuEnterpriseDetail": "$0.99 per extra vCPU.",
+        "ramEnterprise": "Additional RAM",
+        "ramEnterpriseDetail": "$0.99 per extra GB RAM.",
+        "storageEnterprise": "Storage (first 25 GB included)"
+      },
+      "highlight": {
+        "starter": "Perfect for individuals shipping lightweight assets with occasional API or storage bursts.",
+        "studio": "Great for teams managing steady workloads with predictable API volume and storage needs.",
+        "enterprise": "Tune dedicated capacity for pipelines handling massive daily workloads or on-prem requirements."
+      }
+    }
+  },
+  "videoPage": {
+    "eyebrow": "Video compression",
+    "title": "Smarter video compression and storage",
+    "subtitle": "Frame-by-frame optimisation with presets tuned for your delivery platforms.",
+    "primaryAction": "Start compressing",
+    "secondaryAction": "Read workflow guide",
+    "workflowsHeading": "Choose a ready-to-run workflow",
+    "workflows": [
+      {
+      "title": "Product demo exports",
+      "description": "Balanced CRF and VP9 tuning keep overlays crisp across browsers."
+      },
+      {
+      "title": "Live stream lower thirds",
+      "description": "Generate HEVC clips tuned for OBS and hardware switchers in seconds."
+      },
+      {
+        "title": "Mobile promo reels",
+        "description": "Deliver lightning-fast MP4 exports with automatic loudness normalisation."
+      }
+    ],
+    "presetsHeading": "Popular preset bundles",
+    "presets": [
+      "Web Optimised 1080p",
+      "Social Stories 720p",
+      "AR Overlay Pro",
+      "Alpha GIF Cleanup"
+    ]
+  },
+  "imagePage": {
+    "eyebrow": "Image workflows",
+    "title": "High-quality image compression",
+    "subtitle": "Optimise UI exports, marketing assets, and product photography without sacrificing detail.",
+    "workflowsHeading": "Popular image workflows",
+    "workflows": [
+      {
+        "title": "Brand asset export",
+        "description": "Batch convert layered PSDs into WebP with preserved transparency."
+      },
+      {
+        "title": "Icon sprite optimisation",
+        "description": "Compress icon sheets while aligning pixel ratios for crisp rendering."
+      },
+      {
+        "title": "Marketplace pack preparation",
+        "description": "Normalize color profiles and trim whitespace before publishing."
+      }
+    ],
+    "formatsHeading": "Supported formats",
+    "formats": [
+      "PNG",
+      "WebP",
+      "AVIF",
+      "TIFF",
+      "SVG",
+      "ICO"
+    ]
+  },
+  "soundPage": {
+    "eyebrow": "Audio tools",
+    "title": "Streamlined audio processing",
+    "subtitle": "Clean voiceovers, optimise music beds, and balance loudness for any channel.",
+    "optionsHeading": "What you can do",
+    "options": [
+      {
+        "title": "Dialogue isolate",
+        "description": "Remove room noise while keeping natural vocal tone for dubbing workflows."
+      },
+      {
+        "title": "Spatial mixdowns",
+        "description": "Downmix surround stems to stereo while preserving clarity for mobile devices."
+      },
+      {
+        "title": "Podcast enhancer",
+        "description": "Apply loudness normalisation, EQ, and dynamic levelling in one pass."
+      }
+    ],
+    "formatsHeading": "Audio formats supported",
+    "formats": [
+      "WAV",
+      "AIFF",
+      "FLAC",
+      "AAC",
+      "MP3",
+      "OGG"
+    ]
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for might have been moved or is temporarily unavailable.",
+    "cta": "Go back home"
+  }
+}

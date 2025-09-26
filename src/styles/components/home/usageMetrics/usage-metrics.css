@@ -1,0 +1,102 @@
+.usage-metrics {
+  display: grid;
+  gap: 32px;
+}
+
+.usage-metrics__header {
+  display: grid;
+  gap: 12px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.usage-metrics__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0;
+}
+
+.usage-metrics__header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.5vw, 2.4rem);
+  color: var(--heading-color);
+  letter-spacing: -0.01em;
+}
+
+.usage-metrics__subtitle {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--muted-text-color);
+  line-height: 1.6;
+}
+
+.usage-metrics__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.usage-metrics__card {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 24px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(92, 108, 255, 0.18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(6px);
+}
+
+.usage-metrics__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.usage-metrics__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(92, 108, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.usage-metrics__value {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--heading-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-metrics__label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted-text-color);
+}
+
+.usage-metrics__desc {
+  font-size: 0.9rem;
+  color: var(--muted-text-color);
+  line-height: 1.5;
+}
+
+@media (max-width: 680px) {
+  .usage-metrics {
+    gap: 24px;
+  }
+
+  .usage-metrics__grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}

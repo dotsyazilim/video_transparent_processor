@@ -1,0 +1,461 @@
+{
+  "language": {
+    "label": "Dil",
+    "code": "tr",
+    "name": "Türkçe"
+  },
+  "languages": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "hi": "हिन्दी",
+    "ru": "Русский",
+    "zh": "中文"
+  },
+  "header": {
+    "brand": "TransparaStream",
+    "navigation": "Ana menü",
+    "ads": {
+      "reserve": "Bu alanı ayırtın",
+      "tag": "Reklam",
+      "infobar": "Markalı reklam alanları ve beyaz etiketli yerleştirmelerle ROI'nizi artırın."
+    },
+    "actions": {
+      "searchAria": "Ara",
+      "login": "Giriş Yap",
+      "signup": "Kayıt Ol"
+    },
+    "nav": [
+      {
+        "id": "convert",
+        "label": "Dönüştür",
+        "columns": [
+          {
+            "heading": "Video ve Ses",
+            "items": [
+              "Video Dönüştürücü",
+              "Ses Dönüştürücü",
+              "Altyazı Dönüştürücü"
+            ]
+          },
+          {
+            "heading": "Görüntü",
+            "items": [
+              "Görüntü Dönüştürücü",
+              "PNG'den WebP'ye",
+              "SVG'den PNG'ye"
+            ]
+          },
+          {
+            "heading": "PDF ve Belgeler",
+            "items": [
+              "PDF'den Word'e",
+              "DOCX'ten PDF'ye",
+              "eKitap Dönüştürücü"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compress",
+        "label": "Sıkıştır",
+        "columns": [
+          {
+            "heading": "Video ve Ses",
+            "items": [
+              "Video Sıkıştırıcı",
+              "MP3 Sıkıştırıcı",
+              "WAV Sıkıştırıcı"
+            ]
+          },
+          {
+            "heading": "Görüntü",
+            "items": [
+              "Görüntü Sıkıştırıcı",
+              "JPEG Sıkıştırıcı",
+              "PNG Sıkıştırıcı"
+            ]
+          },
+          {
+            "heading": "GIF",
+            "items": [
+              "GIF Sıkıştırıcı",
+              "APNG İyileştirici"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tools",
+        "label": "Araçlar",
+        "columns": [
+          {
+            "heading": "Arka Plan",
+            "items": [
+              "Arka Planı Kaldır",
+              "Chroma Key Filtresi",
+              "Renk Derecelendirme"
+            ]
+          },
+          {
+            "heading": "Kurgu",
+            "items": [
+              "Kes ve Birleştir",
+              "Altyazı Ekle",
+              "Filigranı Kaldır"
+            ]
+          },
+          {
+            "heading": "Teslimat",
+            "items": [
+              "Bağlantı ile Paylaş",
+              "QR Kod Oluştur",
+              "Webhook Uyarıları"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "api",
+        "label": "API",
+        "description": "Boruları programatik olarak şekillendirin",
+        "href": "#api"
+      },
+      {
+        "id": "pricing",
+        "label": "Fiyatlandırma",
+        "href": "/pricing"
+      },
+      {
+        "id": "video",
+        "label": "Video",
+        "href": "/video"
+      },
+      {
+        "id": "image",
+        "label": "Görüntü",
+        "href": "/image"
+      },
+      {
+        "id": "sound",
+        "label": "Ses",
+        "href": "/sound"
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Görsel ve video sıkıştırmayı otomatikleştirin",
+    "title": "Görsel ve videoları çok daha küçük boyutlara indirin; dosyalar güvenle depolansın.",
+    "description": "İçeriklerinizi kaliteyi koruyarak %90'a kadar sıkıştırır, ana dosyalarınızı coğrafi olarak yedekli depolamada tutarız. Tarayıcıdan 5 MB'a kadar görseller ve 100 MB'a kadar videolar için sınırsız web sıkıştırma dahildir; daha büyük işler için ölçülü API ve depolama ile kolayca ölçekleyin.",
+    "primaryAction": "Dosya yükle",
+    "secondaryAction": "API'yi keşfet",
+    "status": "Kullanım özeti",
+    "cardTitle": "Sıkıştırma ve depolama tasarrufu",
+    "metrics": [
+      {
+        "value": "%90",
+        "label": "Ortalama boyut düşüşü"
+      },
+      {
+        "value": "1.000",
+        "label": "Aylık ücretsiz API isteği"
+      },
+      {
+        "value": "50 MB",
+        "label": "Başlangıç depolama limiti"
+      }
+    ],
+    "previews": {
+      "before": "Orijinal boyut",
+      "after": "İşlenmiş çıktı",
+      "original": "246 MB ProRes 4444",
+      "processed": "28 MB WebM + arşivlenen master"
+    }
+  },
+  "usageMetrics": {
+    "eyebrow": "Platform İstatistikleri",
+    "title": "Gerçek zamanlı platform istatistikleri"
+  },
+  "upload": {
+    "title": "Dosyaları buraya bırakın veya göz atın",
+    "description": "MP4, MOV, WebM, GIF formatlarını 1 GiB'a kadar destekler. 5 MB'a kadar görseller ve 100 MB'a kadar videolar için limitsiz web sıkıştırması dahildir; daha büyük işler ölçülü kuyruğa otomatik taşınır.",
+    "select": "Dosya seç",
+    "sample": "Örnek klibi kullan",
+    "note": "Kart gerekmez. Ölçeklenmeye hazır olduğunuzda API ve depolama kullanımınızı Faturalama ekranından takip edin.",
+    "sidebarTitle": "Hazır ayar vitrin",
+    "sidebarCta": "Tüm hazır ayar kitaplığını gör →",
+    "presets": [
+      {
+        "name": "Web Yayını",
+        "description": "CRF 26 · 1080p · VP9 alpha · CDN'e hazır"
+      },
+      {
+        "name": "Toplu Küçük Resim",
+        "description": "5 MB'a kadar WebP dönüşümü · Otomatik renk profili · Anında önbellekleme"
+      },
+      {
+        "name": "Arşiv Ustası",
+        "description": "Orijinali sakla, MP4/WebM/GIF varyantlarını otomatik üret"
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Platform Özellikleri",
+    "title": "Profesyonel medya işleme çözümleri",
+    "intro": "Video, görsel, doküman ve API odaklı özelliklerle tüm medya iş akışınızı optimize edin.",
+    "learnMore": "Daha Fazla Bilgi"
+  },
+  "apiPromo": {
+    "title": "Tek API ile sıkıştırma ve depolamayı yönetin",
+    "description": "Tarayıcıdan başlatın, API ile büyütün. Tek bir JSON ile sıkıştırma, depolama politikaları ve teslimat zincirinizi uçtan uca yönetin.",
+    "benefits": [
+      "Her anahtar için 1.000 aylık ücretsiz istek",
+      "Tek payload sıkıştırma, depolama ve teslimatı kontrol eder",
+      "İmzalı URL'lerle webhook, S3 ve CDN geri çağırmaları"
+    ],
+    "primaryAction": "API referansını aç",
+    "secondaryAction": "Sandbox anahtarı oluştur",
+    "codeSample": "curl -X POST https://api.transparastream.com/v1/compress \\\n  -H \"Authorization: Bearer <token>\" \\\n  -d '{\\\"preset\\\":\\\"web-stream\\\",\\\"storeMaster\\\":true,\\\"callbacks\\\":[\\\"s3\\\"]}'"
+  },
+  "testimonials": {
+    "eyebrow": "Büyük hacimli medya ekiplerinin tercihi",
+    "title": "Milyonlarca varlık teslim eden ürün, video ve platform ekipleri için.",
+    "items": [
+      {
+        "quote": "Her ay 40 TB ürün videosu yayımlıyoruz. Başlangıç planı pazarlama ekibimizi tamamen self-servis tuttu, Stüdyo planı ise API patlamalarını sürpriz faturalara dönüştürmeden karşılıyor.",
+        "author": "Maya Chen",
+        "role": "Medya Operasyonları Direktörü, Lumin Ledger"
+      },
+      {
+        "quote": "Depolama katmanları tüm masterları arşivlerken WebP ve WebM'leri otomatik ince gönderiyor. Finans ekibi sonunda öngörülebilir, denetlenebilir raporlar alıyor.",
+        "author": "Ege Demir",
+        "role": "Platform Ürün Yöneticisi, HoloCart"
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Esnek kullanım bazlı planlar",
+    "title": "Limitsiz web sıkıştırmadan turnkey altyapıya.",
+    "primaryCta": "Sıkıştırmaya başla",
+    "secondaryCta": "Satışla iletişime geç",
+    "plans": [
+      {
+        "name": "Başlangıç",
+        "price": "0 $",
+        "cadence": "aylık",
+        "features": [
+          "5 MB'a kadar görseller ve 100 MB'a kadar videolar için limitsiz web sıkıştırma",
+          "1.000 API isteği dahil; ek 10 bin istek 1 $",
+          "50 MB yönetilen depolama dahil; sonrası GB başına 0,10 $",
+          "Paylaşımlı işlem kuyruğu ve e-posta desteği"
+        ],
+        "highlighted": false,
+        "cta": "Sıkıştırmaya başla"
+      },
+      {
+        "name": "Stüdyo",
+        "price": "4,99 $",
+        "cadence": "aylık",
+        "features": [
+          "50 MB'a kadar görseller ve 1 GB'a kadar videolar için limitsiz web sıkıştırma",
+          "Günlük 10 bin API isteği dahil; ek 20 bin istek 1 $",
+          "1 GB yönetilen depolama dahil; sonrası GB başına 0,10 $",
+          "Kullanım panoları, faturalama dışa aktarımları, öncelikli kuyruk"
+        ],
+        "highlighted": true,
+        "cta": "Stüdyo denemesini başlat"
+      },
+      {
+        "name": "Kurumsal",
+        "price": "4,99 $+",
+        "cadence": "düğüm başına",
+        "features": [
+          "25 GB depolamalı, 2 vCPU / 2 GB RAM özel düğümler",
+          "vCPU, RAM ve depolamayı 0,99 $ artışlarla ölçekleyin",
+          "Temel düğüm başına günlük tahmini 50 bin istek kapasitesi",
+          "Özel ağ, SLA'ler ve beyaz eldiven geçiş"
+        ],
+        "highlighted": false,
+        "cta": "Düğümleri yapılandır"
+      }
+    ]
+  },
+  "pricingPage": {
+    "eyebrow": "Fiyatlandırma",
+    "title": "Sizinle büyüyen sıkıştırma, API ve altyapıyı seçin",
+    "subtitle": "Önce limitsiz web sıkıştırmayla başlayın, iş yükünüz büyüdükçe API çağrılarını, yönetilen depolamayı veya özel sunucuları ekleyin.",
+    "featuresHeading": "Tüm planlarda neler var",
+    "features": [
+      "Yaşam döngüsü kurallarıyla coğrafi yedekli depolama",
+      "WebM, MP4, WebP, AVIF ve GIF çıktıları için hazır ayar kitaplığı",
+      "Gerçek zamanlı kullanım panoları ve dışa aktarılabilir fatura verileri",
+      "Rol tabanlı erişim kontrolü, denetim günlükleri ve webhook tekrarları"
+    ],
+    "faqHeading": "Sık sorulan sorular",
+    "faqs": [
+      {
+        "question": "Limitsiz web sıkıştırma nasıl çalışıyor?",
+        "answer": "Başlangıç ve Stüdyo planları, dosyalar dahil edilen eşiklerin altında kaldığı sürece tarayıcıdan sınırsız sıkıştırma yapmanızı sağlar. Daha büyük yüklemeler otomatik olarak ölçülü kuyruğa taşınır, işiniz asla kaybolmaz."
+      },
+      {
+        "question": "Dahil edilen API isteklerinden sonra ne oluyor?",
+        "answer": "Tahmin edilebilir bloklar halinde faturalandırıyoruz — Başlangıç'ta ek 10 bin istek 1 $, Stüdyo'da ek 20 bin istek 1 $. Kullanımı gerçek zamanlı görürsünüz ve ay sonunda ücretlendirilir."
+      },
+      {
+        "question": "Depolamanızı kendi CDN'imle kullanabilir miyim?",
+        "answer": "Evet. Varlıkları yönetilen depolamamızda tutabilir, S3 uyumlu kovalarınıza aktarabilir veya işlemeden sonra CDN'inize gönderebilirsiniz."
+      }
+    ],
+    "contactHeading": "Özel bir kurulum mu gerekiyor?",
+    "contactDescription": "Çözümler ekibimiz bölgesel dağıtım, hibrit render ve size özel SLA'ler tasarlayabilir.",
+    "contactCta": "Satışla iletişime geç",
+    "calculator": {
+      "eyebrow": "Maliyet tahminleyici",
+      "title": "Aylık faturayı modellemek için kaydırıcıları hareket ettirin.",
+      "subtitle": "Planları değiştirin ve ihtiyaç duyduğunuz API, depolama ve altyapıyı yansıtacak şekilde tutamaçları sürükleyin.",
+      "planToggleAria": "Fiyat planı seç",
+      "plan": {
+        "starter": "Başlangıç",
+        "starterDescription": "5 MB'a kadar görseller ve 100 MB'a kadar videolar için limitsiz web sıkıştırma. API ve depolama kullanımı ölçülü olarak fiyatlanır.",
+        "studio": "Stüdyo",
+        "studioDescription": "Daha büyük web limitleri, günlük 10 bin API isteği ve 1 GB yönetilen depolama içerir.",
+        "enterprise": "Kurumsal",
+        "enterpriseDescription": "Özel düğümler kiralayın. 2 vCPU / 2 GB RAM ve 25 GB depolama ile başlayın, kaydırarak kaynak ekleyin."
+      },
+      "apiLabelStarter": "Aylık API isteği",
+      "apiLabelStudio": "Aylık API isteği",
+      "apiIncluded": "{{included}} ücretsiz, sonrası blok başına fiyatlanır.",
+      "requests": "istek",
+      "storageLabel": "Depolama (GB)",
+      "storageLabelEnterprise": "Rezerve depolama (GB)",
+      "storageStarterHelper": "İlk 0,05 GB (50 MB) dahildir.",
+      "storageStudioHelper": "İlk 1 GB dahildir.",
+      "storageEnterpriseHelper": "İlk 25 GB dahildir. Daha fazla rezerve depolama için kaydırın.",
+      "unitGb": "GB",
+      "unitCpu": "vCPU",
+      "cpuLabel": "vCPU sayısı",
+      "cpuHelper": "Ana düğüm 2 vCPU içerir. Her ekstra vCPU 0,99 $.",
+      "ramLabel": "RAM (GB)",
+      "ramHelper": "Ana düğüm 2 GB RAM içerir. Her ekstra GB 0,99 $.",
+      "totalLabel": "Tahmini aylık toplam",
+      "breakdown": {
+        "baseStarter": "Başlangıç temel plan",
+        "baseStarterDetail": "5 MB'a kadar görseller ve 100 MB'a kadar videolar için limitsiz web sıkıştırma.",
+        "apiStarter": "API kullanımı (1.000 istek dahil)",
+        "apiStarterDetail": "Her ek 10 bin istek 1 $.",
+        "storageStarter": "Depolama (ilk 50 MB dahil)",
+        "storageDetail": "Her ek GB 0,10 $.",
+        "baseStudio": "Stüdyo aboneliği",
+        "baseStudioDetail": "50 MB'a kadar görseller, 1 GB'a kadar videolar ve günlük 10 bin API isteği içerir.",
+        "apiStudio": "Dahil edilen 10 bin/gün üzeri API kullanımı",
+        "apiStudioDetail": "Her ek 20 bin istek 1 $.",
+        "storageStudio": "Depolama (ilk 1 GB dahil)",
+        "baseEnterprise": "Kurumsal temel düğüm",
+        "baseEnterpriseDetail": "25 GB depolamalı 2 vCPU / 2 GB RAM özel düğüm. Günlük tahmini 50 bin istek.",
+        "cpuEnterprise": "Ek vCPU",
+        "cpuEnterpriseDetail": "Her ekstra vCPU 0,99 $.",
+        "ramEnterprise": "Ek RAM",
+        "ramEnterpriseDetail": "Her ekstra GB 0,99 $.",
+        "storageEnterprise": "Depolama (ilk 25 GB dahil)"
+      },
+      "highlight": {
+        "starter": "Ara sıra API veya depolama ihtiyacı olan bireysel üreticiler için ideal.",
+        "studio": "Düzenli iş yüklerini ve öngörülebilir API hacmini yöneten ekipler için harika.",
+        "enterprise": "Günlük devasa iş yükleri veya kurum içi gereksinimleri olan boru hatları için özel kapasite sağlayın."
+      }
+    }
+  },
+  "videoPage": {
+    "eyebrow": "Video sıkıştırma",
+    "title": "Akıllı video sıkıştırması ve depolama",
+    "subtitle": "Modern kodekler, kare bazlı optimizasyon ve depolama politikalarınızla uyumlu presetler.",
+    "primaryAction": "Sıkıştırmaya başla",
+    "secondaryAction": "İş akışı rehberini oku",
+    "workflowsHeading": "Hazır iş akışını seçin",
+    "workflows": [
+      {
+        "title": "Ürün demoları",
+        "description": "CRF ve VP9 ayarlarını otomatik dengeleyerek tarayıcıda keskin detaylar elde edin."
+      },
+      {
+        "title": "Canlı yayın paketleri",
+        "description": "OBS ve donanım mikserlerine hazır HEVC klipleri anında üretin."
+      },
+      {
+        "title": "Mobil tanıtım videoları",
+        "description": "Otomatik ses seviyeleme ile yıldırım hızında MP4 çıktıları teslim edin."
+      }
+    ],
+    "presetsHeading": "Popüler hazır ayar paketleri",
+    "presets": [
+      "Web'e Uygun 1080p",
+      "Sosyal Hikâyeler 720p",
+      "AR Overlay Pro",
+      "Alfa GIF Temizleme"
+    ]
+  },
+  "imagePage": {
+    "eyebrow": "Görsel araçları",
+    "title": "Yüksek kaliteli görsel sıkıştırma",
+    "subtitle": "Sprite'ları, arayüz çıktıları ve kampanya görsellerini kaliteyi bozmadan optimize edin.",
+    "workflowsHeading": "Popüler görüntü iş akışları",
+    "workflows": [
+      {
+        "title": "Marka varlık aktarımı",
+        "description": "Katmanlı PSD dosyalarını renk profilleri korunarak toplu şekilde WebP'ye dönüştürün."
+      },
+      {
+        "title": "Simge sprite optimizasyonu",
+        "description": "Piksel oranlarını hizalarken ikon setlerini sıkıştırın."
+      },
+      {
+        "title": "Pazar yeri paket hazırlığı",
+        "description": "Yayınlamadan önce renk profillerini normalize edin ve boşlukları budayın."
+      }
+    ],
+    "formatsHeading": "Desteklenen formatlar",
+    "formats": [
+      "PNG",
+      "WebP",
+      "AVIF",
+      "TIFF",
+      "SVG",
+      "ICO"
+    ]
+  },
+  "soundPage": {
+    "eyebrow": "Ses araçları",
+    "title": "Akıcı ses işleme",
+    "subtitle": "Seslendirmeleri temizleyin, müzik altlıklarını optimize edin ve her kanal için ses yüksekliğini dengeleyin.",
+    "optionsHeading": "Neler yapabilirsiniz",
+    "options": [
+      {
+        "title": "Diyalog izolasyonu",
+        "description": "Dublaj için doğal vokal tonunu korurken oda gürültüsünü çıkarın."
+      },
+      {
+        "title": "Uzamsal miks",
+        "description": "Surround kanalları mobil cihazlar için netliği koruyarak stereo'ya dönüştürün."
+      },
+      {
+        "title": "Podcast güçlendirici",
+        "description": "Tek geçişte ses yüksekliği, EQ ve dinamik dengeleme uygulayın."
+      }
+    ],
+    "formatsHeading": "Desteklenen ses formatları",
+    "formats": [
+      "WAV",
+      "AIFF",
+      "FLAC",
+      "AAC",
+      "MP3",
+      "OGG"
+    ]
+  },
+  "notFound": {
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığınız sayfa taşınmış olabilir veya geçici olarak kullanılamıyor.",
+    "cta": "Ana sayfaya dön"
+  }
+}
